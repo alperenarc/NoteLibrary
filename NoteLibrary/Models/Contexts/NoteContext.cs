@@ -13,7 +13,11 @@ namespace NoteLibrary.Models.Contexts
             : base(options)
         {
         }
-        public DbSet<Categories> Category { get; set; }
+        public DbSet<Category> CategoryTable { get; set; }
+        public DbSet<User> UserTable { get; set; }
+        public DbSet<UserFiles> UserFileTable { get; set; }
+        public DbSet<File> FileTable { get; set; }
+
         
     }
 }

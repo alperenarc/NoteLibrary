@@ -6,16 +6,14 @@ using System.Threading.Tasks;
 
 namespace NoteLibrary.Models.Entities
 {
-    public class Categories
+    public class File:Entity
     {
-        [Key]
-        public int ID { get; set; }
-
         [Required]
-        public string Name { get; set; }
-        public bool State { get; set; }
-
-        public Categories CategoriesID { get; set; }
-
+        public string CourseName { get; set; }
+        [Required]
+        public string Title { get; set; }
+        [Required]
+        public string Description { get; set; }
+         
     }
 }
