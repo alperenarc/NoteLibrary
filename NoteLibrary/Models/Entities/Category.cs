@@ -12,11 +12,11 @@ namespace NoteLibrary.Models.Entities
         [Required]
         public string Name { get; set; }
 
-        [ForeignKey("Category")]
-        public int UpperId { get; set; }
+        //[ForeignKey("Category")]
+        //public int UpperId { get; set; }
 
         //Navigation
         public ICollection<UserFiles> Files { get; set; }
-
+        public Category CategoryId { get; set; }
     }
 }
