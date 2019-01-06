@@ -4,13 +4,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NoteLibrary.Migrations
 {
-    public partial class Database_Added : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Category");
-
             migrationBuilder.CreateTable(
                 name: "CategoryTable",
                 columns: table => new
@@ -19,11 +16,37 @@ namespace NoteLibrary.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     State = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    UpperId = table.Column<int>(nullable: false)
+                    CategoryIdId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CategoryTable", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CategoryTable_CategoryTable_CategoryIdId",
+                        column: x => x.CategoryIdId,
+                        principalTable: "CategoryTable",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserTable",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    State = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Surname = table.Column<string>(nullable: false),
+                    City = table.Column<string>(nullable: false),
+                    University = table.Column<string>(nullable: false),
+                    Department = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTable", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -35,56 +58,23 @@ namespace NoteLibrary.Migrations
                     State = table.Column<bool>(nullable: false),
                     CourseName = table.Column<string>(nullable: false),
                     Title = table.Column<string>(nullable: false),
-                    Description = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FileTable", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserTable",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    State = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
-                    Surname = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(nullable: false),
-                    City = table.Column<string>(nullable: false),
-                    University = table.Column<string>(nullable: false),
-                    Department = table.Column<string>(nullable: false),
-                    Email = table.Column<string>(nullable: false),
-                    Password = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserTable", x => x.UserName);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserFileTable",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    State = table.Column<bool>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
                     FilePath = table.Column<string>(nullable: false),
                     UploadDate = table.Column<DateTime>(nullable: false),
-                    AddedUserUserName = table.Column<string>(nullable: true),
+                    AddedUserId = table.Column<int>(nullable: true),
                     CategoryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserFileTable", x => x.Id);
+                    table.PrimaryKey("PK_FileTable", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserFileTable_UserTable_AddedUserUserName",
-                        column: x => x.AddedUserUserName,
+                        name: "FK_FileTable_UserTable_AddedUserId",
+                        column: x => x.AddedUserId,
                         principalTable: "UserTable",
-                        principalColumn: "UserName",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserFileTable_CategoryTable_CategoryId",
+                        name: "FK_FileTable_CategoryTable_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "CategoryTable",
                         principalColumn: "Id",
@@ -92,13 +82,18 @@ namespace NoteLibrary.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserFileTable_AddedUserUserName",
-                table: "UserFileTable",
-                column: "AddedUserUserName");
+                name: "IX_CategoryTable_CategoryIdId",
+                table: "CategoryTable",
+                column: "CategoryIdId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserFileTable_CategoryId",
-                table: "UserFileTable",
+                name: "IX_FileTable_AddedUserId",
+                table: "FileTable",
+                column: "AddedUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FileTable_CategoryId",
+                table: "FileTable",
                 column: "CategoryId");
         }
 
@@ -108,39 +103,10 @@ namespace NoteLibrary.Migrations
                 name: "FileTable");
 
             migrationBuilder.DropTable(
-                name: "UserFileTable");
-
-            migrationBuilder.DropTable(
                 name: "UserTable");
 
             migrationBuilder.DropTable(
                 name: "CategoryTable");
-
-            migrationBuilder.CreateTable(
-                name: "Category",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CategoriesIDID = table.Column<int>(nullable: true),
-                    Name = table.Column<string>(nullable: false),
-                    State = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Category", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Category_Category_CategoriesIDID",
-                        column: x => x.CategoriesIDID,
-                        principalTable: "Category",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Category_CategoriesIDID",
-                table: "Category",
-                column: "CategoriesIDID");
         }
     }
 }

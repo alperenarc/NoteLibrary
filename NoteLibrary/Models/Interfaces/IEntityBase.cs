@@ -14,7 +14,7 @@ namespace NoteLibrary.Models.Interfaces
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         int Id { get; set; }
 
-        [DefaultValue(true)]
+        //[DefaultValue("true")]
         bool State { get; set; } 
     }
 }

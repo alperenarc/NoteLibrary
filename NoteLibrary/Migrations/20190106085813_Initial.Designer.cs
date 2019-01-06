@@ -10,8 +10,8 @@ using NoteLibrary.Models.Contexts;
 namespace NoteLibrary.Migrations
 {
     [DbContext(typeof(NoteContext))]
-    [Migration("20190106074329_fourth")]
-    partial class fourth
+    [Migration("20190106085813_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,8 +49,6 @@ namespace NoteLibrary.Migrations
 
                     b.Property<int?>("AddedUserId");
 
-                    b.Property<string>("AddedUserUserName");
-
                     b.Property<int?>("CategoryId");
 
                     b.Property<string>("CourseName")
@@ -71,18 +69,18 @@ namespace NoteLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("AddedUserId");
 
-                    b.HasIndex("AddedUserId", "AddedUserUserName");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("FileTable");
                 });
 
             modelBuilder.Entity("NoteLibrary.Models.Entities.User", b =>
                 {
-                    b.Property<int>("Id");
-
-                    b.Property<string>("UserName");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
                         .IsRequired();
@@ -107,9 +105,7 @@ namespace NoteLibrary.Migrations
                     b.Property<string>("University")
                         .IsRequired();
 
-                    b.HasKey("Id", "UserName");
-
-                    b.HasAlternateKey("UserName");
+                    b.HasKey("Id");
 
                     b.ToTable("UserTable");
                 });
@@ -123,13 +119,13 @@ namespace NoteLibrary.Migrations
 
             modelBuilder.Entity("NoteLibrary.Models.Entities.File", b =>
                 {
+                    b.HasOne("NoteLibrary.Models.Entities.User", "AddedUser")
+                        .WithMany("Files")
+                        .HasForeignKey("AddedUserId");
+
                     b.HasOne("NoteLibrary.Models.Entities.Category", "Category")
                         .WithMany("Files")
                         .HasForeignKey("CategoryId");
-
-                    b.HasOne("NoteLibrary.Models.Entities.User", "AddedUser")
-                        .WithMany("Files")
-                        .HasForeignKey("AddedUserId", "AddedUserUserName");
                 });
 #pragma warning restore 612, 618
         }
