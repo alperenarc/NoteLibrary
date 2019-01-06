@@ -29,7 +29,7 @@ namespace NoteLibrary.Models.Entities
         public string Password { get; set; }
 
         //Navigation
-        public ICollection<UserFiles> Files { get; set; }
+        public ICollection<File> Files { get; set; }
 
 
     }

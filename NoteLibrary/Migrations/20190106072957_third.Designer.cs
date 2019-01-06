@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NoteLibrary.Models.Contexts;
 
 namespace NoteLibrary.Migrations
 {
     [DbContext(typeof(NoteContext))]
-    partial class NoteContextModelSnapshot : ModelSnapshot
+    [Migration("20190106072957_third")]
+    partial class third
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,8 +47,6 @@ namespace NoteLibrary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AddedUserId");
-
                     b.Property<string>("AddedUserUserName");
 
                     b.Property<int?>("CategoryId");
@@ -69,18 +69,17 @@ namespace NoteLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("AddedUserUserName");
 
-                    b.HasIndex("AddedUserId", "AddedUserUserName");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("FileTable");
                 });
 
             modelBuilder.Entity("NoteLibrary.Models.Entities.User", b =>
                 {
-                    b.Property<int>("Id");
-
-                    b.Property<string>("UserName");
+                    b.Property<string>("UserName")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("City")
                         .IsRequired();
@@ -90,6 +89,8 @@ namespace NoteLibrary.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired();
+
+                    b.Property<int>("Id");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -105,9 +106,7 @@ namespace NoteLibrary.Migrations
                     b.Property<string>("University")
                         .IsRequired();
 
-                    b.HasKey("Id", "UserName");
-
-                    b.HasAlternateKey("UserName");
+                    b.HasKey("UserName");
 
                     b.ToTable("UserTable");
                 });
@@ -121,13 +120,13 @@ namespace NoteLibrary.Migrations
 
             modelBuilder.Entity("NoteLibrary.Models.Entities.File", b =>
                 {
+                    b.HasOne("NoteLibrary.Models.Entities.User", "AddedUser")
+                        .WithMany("Files")
+                        .HasForeignKey("AddedUserUserName");
+
                     b.HasOne("NoteLibrary.Models.Entities.Category", "Category")
                         .WithMany("Files")
                         .HasForeignKey("CategoryId");
-
-                    b.HasOne("NoteLibrary.Models.Entities.User", "AddedUser")
-                        .WithMany("Files")
-                        .HasForeignKey("AddedUserId", "AddedUserUserName");
                 });
 #pragma warning restore 612, 618
         }
