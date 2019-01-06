@@ -31,6 +31,10 @@ namespace NoteLibrary.Models.Entities
         [Display(Name = "Şifre")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        [Required]
+        [Display(Name = "Şifre Tekrar")]
+        [DataType(DataType.Password)]
+        public string ConfirmPassword { get; set; }
 
         //Navigation
         public ICollection<File> Files { get; set; }

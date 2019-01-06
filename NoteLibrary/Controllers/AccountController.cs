@@ -34,15 +34,30 @@ namespace NoteLibrary.Controllers
         // POST: Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind("Name,Surname,City,University,Department,Email,Password,Id,State")] User user)
+        public async Task<IActionResult> Register([Bind("Name,Surname,City,University,Department,Email,Password,Id,State,ConfirmPassword")] User user)
         {
-            if (ModelState.IsValid)
+            if (user.Password == user.ConfirmPassword)
             {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(user);
+                    await _context.SaveChangesAsync();
+                    //return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Login", "Account");
+                }
             }
+            else
+            {
+                ModelState.AddModelError("", "Tekrar Girilen Şifre Hatalı ! Lütfen Tekrar Deneyiniz.");
+            }
+
             return View(user);
+        }
+
+        // GET: Account/Login
+        public IActionResult Login()
+        {
+            return View();
         }
     }
 }
