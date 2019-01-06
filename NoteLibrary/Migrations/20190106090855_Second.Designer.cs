@@ -10,8 +10,8 @@ using NoteLibrary.Models.Contexts;
 namespace NoteLibrary.Migrations
 {
     [DbContext(typeof(NoteContext))]
-    [Migration("20190106072957_third")]
-    partial class third
+    [Migration("20190106090855_Second")]
+    partial class Second
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,7 +47,7 @@ namespace NoteLibrary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AddedUserUserName");
+                    b.Property<int?>("AddedUserId");
 
                     b.Property<int?>("CategoryId");
 
@@ -69,7 +69,7 @@ namespace NoteLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddedUserUserName");
+                    b.HasIndex("AddedUserId");
 
                     b.HasIndex("CategoryId");
 
@@ -78,8 +78,9 @@ namespace NoteLibrary.Migrations
 
             modelBuilder.Entity("NoteLibrary.Models.Entities.User", b =>
                 {
-                    b.Property<string>("UserName")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
                         .IsRequired();
@@ -89,8 +90,6 @@ namespace NoteLibrary.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired();
-
-                    b.Property<int>("Id");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -106,7 +105,7 @@ namespace NoteLibrary.Migrations
                     b.Property<string>("University")
                         .IsRequired();
 
-                    b.HasKey("UserName");
+                    b.HasKey("Id");
 
                     b.ToTable("UserTable");
                 });
@@ -122,7 +121,7 @@ namespace NoteLibrary.Migrations
                 {
                     b.HasOne("NoteLibrary.Models.Entities.User", "AddedUser")
                         .WithMany("Files")
-                        .HasForeignKey("AddedUserUserName");
+                        .HasForeignKey("AddedUserId");
 
                     b.HasOne("NoteLibrary.Models.Entities.Category", "Category")
                         .WithMany("Files")

@@ -12,9 +12,9 @@ namespace NoteLibrary.Models.Entities
         public string Name { get; set; }
         [Required]
         public string Surname { get; set; }
-        [Key]
-        [Required]
-        public string UserName { get; set; }
+        //[Key]
+        //[Required]
+        //public string UserName { get; set; }
         [Required]
         public string City { get; set; }
         [Required]

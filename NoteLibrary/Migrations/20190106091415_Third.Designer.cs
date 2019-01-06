@@ -10,8 +10,8 @@ using NoteLibrary.Models.Contexts;
 namespace NoteLibrary.Migrations
 {
     [DbContext(typeof(NoteContext))]
-    [Migration("20190105184957_Database_Added")]
-    partial class Database_Added
+    [Migration("20190106091415_Third")]
+    partial class Third
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,14 +27,18 @@ namespace NoteLibrary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CategoryIdId");
+
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<bool>("State");
-
-                    b.Property<int>("UpperId");
+                    b.Property<bool>("State")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryIdId");
 
                     b.ToTable("CategoryTable");
                 });
@@ -45,26 +49,42 @@ namespace NoteLibrary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AddedUserId");
+
+                    b.Property<int?>("CategoryId");
+
                     b.Property<string>("CourseName")
                         .IsRequired();
 
                     b.Property<string>("Description")
                         .IsRequired();
 
-                    b.Property<bool>("State");
+                    b.Property<string>("FilePath")
+                        .IsRequired();
+
+                    b.Property<bool>("State")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Title")
                         .IsRequired();
 
+                    b.Property<DateTime>("UploadDate");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AddedUserId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("FileTable");
                 });
 
             modelBuilder.Entity("NoteLibrary.Models.Entities.User", b =>
                 {
-                    b.Property<string>("UserName")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
                         .IsRequired();
@@ -75,15 +95,15 @@ namespace NoteLibrary.Migrations
                     b.Property<string>("Email")
                         .IsRequired();
 
-                    b.Property<int>("Id");
-
                     b.Property<string>("Name")
                         .IsRequired();
 
                     b.Property<string>("Password")
                         .IsRequired();
 
-                    b.Property<bool>("State");
+                    b.Property<bool>("State")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Surname")
                         .IsRequired();
@@ -91,42 +111,23 @@ namespace NoteLibrary.Migrations
                     b.Property<string>("University")
                         .IsRequired();
 
-                    b.HasKey("UserName");
+                    b.HasKey("Id");
 
                     b.ToTable("UserTable");
                 });
 
-            modelBuilder.Entity("NoteLibrary.Models.Entities.UserFiles", b =>
+            modelBuilder.Entity("NoteLibrary.Models.Entities.Category", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AddedUserUserName");
-
-                    b.Property<int?>("CategoryId");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired();
-
-                    b.Property<bool>("State");
-
-                    b.Property<DateTime>("UploadDate");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddedUserUserName");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("UserFileTable");
+                    b.HasOne("NoteLibrary.Models.Entities.Category", "CategoryId")
+                        .WithMany()
+                        .HasForeignKey("CategoryIdId");
                 });
 
-            modelBuilder.Entity("NoteLibrary.Models.Entities.UserFiles", b =>
+            modelBuilder.Entity("NoteLibrary.Models.Entities.File", b =>
                 {
                     b.HasOne("NoteLibrary.Models.Entities.User", "AddedUser")
                         .WithMany("Files")
-                        .HasForeignKey("AddedUserUserName");
+                        .HasForeignKey("AddedUserId");
 
                     b.HasOne("NoteLibrary.Models.Entities.Category", "Category")
                         .WithMany("Files")

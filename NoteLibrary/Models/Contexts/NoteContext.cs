@@ -15,15 +15,18 @@ namespace NoteLibrary.Models.Contexts
 
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder.Entity<User>().HasKey(table => new {
-                table.Id,
-                table.UserName
-            });
-
+            modelBuilder.Entity<User>()
+                .Property(b => b.State)
+                .HasDefaultValue(true);
+            modelBuilder.Entity<Category>()
+                .Property(b => b.State)
+                .HasDefaultValue(true);
+            modelBuilder.Entity<File>()
+                .Property(b => b.State)
+                .HasDefaultValue(true);
         }
-       
 
         public DbSet<Category> CategoryTable { get; set; }
         public DbSet<User> UserTable { get; set; }
