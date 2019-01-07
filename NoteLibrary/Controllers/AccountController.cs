@@ -18,7 +18,6 @@ namespace NoteLibrary.Controllers
         {
             _context = context;
         }
-
         // GET: Account
         public IActionResult Index()
         {
@@ -30,7 +29,6 @@ namespace NoteLibrary.Controllers
         {
             return View();
         }
-
         // POST: Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -42,7 +40,6 @@ namespace NoteLibrary.Controllers
                 {
                     _context.Add(user);
                     await _context.SaveChangesAsync();
-                    //return RedirectToAction(nameof(Index));
                     return RedirectToAction("Login", "Account");
                 }
             }
@@ -50,10 +47,8 @@ namespace NoteLibrary.Controllers
             {
                 ModelState.AddModelError("", "Tekrar Girilen Şifre Hatalı ! Lütfen Tekrar Deneyiniz.");
             }
-
             return View(user);
         }
-
         // GET: Account/Login
         public IActionResult Login()
         {
