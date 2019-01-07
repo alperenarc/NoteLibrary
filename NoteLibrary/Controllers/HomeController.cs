@@ -9,6 +9,7 @@ using MimeKit;
 using MailKit.Net.Smtp;
 using NoteLibrary.Models;
 using System.Net;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 
 namespace NoteLibrary.Controllers
 {
@@ -18,26 +19,32 @@ namespace NoteLibrary.Controllers
         {
             return View();
         }
-        public IActionResult SendMail()
+        public IActionResult Contact()
         {
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("alperen", "alparicieren@gmail.com"));
-            message.To.Add(new MailboxAddress("alperen", "eren.arc.eren@gmail.com"));
-            message.Subject = "baslık";
-            message.Body = new TextPart("Plain")
+            return View();
+        }
+        public IActionResult SendMail(string email, string messagecontent, string subject, string name )
+        {
+            var message = new MimeMessage(); 
+            message.From.Add(new MailboxAddress("alparicieren@gmail.com"));
+            message.To.Add(new MailboxAddress("eren.arc.eren@gmail.com"));
+            message.Subject = subject;
+            message.Body = new TextPart("html")
             {
-                Text = "asd asd asd "
+                Text = name + " 'den <br> " +
+                email + " Mailinden <br> " +
+                " Mesaj : " + message
             };
 
             using (var client = new MailKit.Net.Smtp.SmtpClient())
             {
+                //587
                 client.Connect("smtp.gmail.com", 587, false);
-                client.Authenticate("alparicieren@gmail.com", "67739599");
+                client.Authenticate("eren.arc.eren@gmail.com", "alparc817ismail.");
                 client.Send(message);
                 client.Disconnect(true);
             };
-
-            return View();
+            return View("Index");
 
         }
 

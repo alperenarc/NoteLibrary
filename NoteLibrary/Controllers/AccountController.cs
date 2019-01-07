@@ -47,7 +47,6 @@ namespace NoteLibrary.Controllers
                 {
                     _context.Add(user);
                     await _context.SaveChangesAsync();
-                    //return RedirectToAction(nameof(Index));
                     return RedirectToAction("Login", "Account");
                 }
             }
