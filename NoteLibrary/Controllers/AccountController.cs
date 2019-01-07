@@ -23,6 +23,10 @@ namespace NoteLibrary.Controllers
         // GET: Account
         public IActionResult Index()
         {
+            if(HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
