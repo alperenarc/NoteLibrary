@@ -33,6 +33,13 @@ namespace NoteLibrary
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //Session için performans sağlıyor
+            services.AddDistributedMemoryCache();
+            //Session eklendi
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             var connection = @"Server=(localdb)\mssqllocaldb;Database=NoteLibrary;Trusted_Connection=True;ConnectRetryCount=0";
@@ -56,6 +63,8 @@ namespace NoteLibrary
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseSession();
+           
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
