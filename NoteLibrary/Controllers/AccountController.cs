@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,17 +19,19 @@ namespace NoteLibrary.Controllers
         {
             _context = context;
         }
+
         // GET: Account
         public IActionResult Index()
         {
             return View();
         }
-        
+
         // GET: Account/Register
         public IActionResult Register()
         {
             return View();
         }
+
         // POST: Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -40,6 +43,7 @@ namespace NoteLibrary.Controllers
                 {
                     _context.Add(user);
                     await _context.SaveChangesAsync();
+                    //return RedirectToAction(nameof(Index));
                     return RedirectToAction("Login", "Account");
                 }
             }
@@ -47,11 +51,37 @@ namespace NoteLibrary.Controllers
             {
                 ModelState.AddModelError("", "Tekrar Girilen Şifre Hatalı ! Lütfen Tekrar Deneyiniz.");
             }
+
             return View(user);
         }
+
         // GET: Account/Login
         public IActionResult Login()
         {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(User user)
+        {
+
+            //Girilen bilgilerle uyuşan user var mı
+            var kontrol = await _context.UserTable
+                .FirstOrDefaultAsync(p => p.Email == user.Email && p.Password == user.Password);
+            if (kontrol != null)
+            {
+                //state durumu nedir
+                if (kontrol.State == false)
+                {
+                    ModelState.AddModelError("", "Geçersiz Kullanıcı");
+                }
+                else
+                {
+                    // session'a user Id'sini at ve indexe gönder.
+                    HttpContext.Session.SetInt32("UserId", kontrol.Id);
+                    return RedirectToAction("Index", "Account");
+                }
+            }
+
             return View();
         }
     }
