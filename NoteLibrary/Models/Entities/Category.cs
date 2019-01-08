@@ -11,9 +11,7 @@ namespace NoteLibrary.Models.Entities
     {
         [Required]
         public string Name { get; set; }
-
-        //Navigation
-        public ICollection<File> Files { get; set; }
-        public Category CategoryId { get; set; }
+        [Required]
+        public int UpperId { get; set; }
     }
 }
