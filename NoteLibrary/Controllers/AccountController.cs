@@ -23,7 +23,7 @@ namespace NoteLibrary.Controllers
         // GET: Account
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetInt32("UserId") == null)
+            if (HttpContext.Session.GetInt32("UserId") == null || HttpContext.Session.GetInt32("UserId") == 0)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -91,6 +91,10 @@ namespace NoteLibrary.Controllers
 
         public async Task<IActionResult> Profile()
         {
+            if (HttpContext.Session.GetInt32("UserId") == null || HttpContext.Session.GetInt32("UserId") ==0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
             var user = await _context.UserTable.FirstOrDefaultAsync(p => p.Id == userid);
             if(user == null)
@@ -122,5 +126,6 @@ namespace NoteLibrary.Controllers
             }
             return View(user);
         }
+
     }
 }

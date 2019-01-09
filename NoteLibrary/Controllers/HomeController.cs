@@ -10,6 +10,7 @@ using MailKit.Net.Smtp;
 using NoteLibrary.Models;
 using System.Net;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace NoteLibrary.Controllers
 {
@@ -17,10 +18,12 @@ namespace NoteLibrary.Controllers
     {
         public IActionResult Index()
         {
+            HttpContext.Session.SetInt32("UserId", 0);
             return View();
         }
         public IActionResult Contact()
         {
+            HttpContext.Session.SetInt32("UserId", 0);
             return View();
         }
         public IActionResult SendMail(string email, string messagecontent, string subject, string name )
