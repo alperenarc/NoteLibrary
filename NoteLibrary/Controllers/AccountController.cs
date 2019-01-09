@@ -23,7 +23,7 @@ namespace NoteLibrary.Controllers
         // GET: Account
         public IActionResult Index()
         {
-            if(HttpContext.Session.GetInt32("UserId") == null)
+            if (HttpContext.Session.GetInt32("UserId") == null)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -58,6 +58,7 @@ namespace NoteLibrary.Controllers
             return View(user);
         }
 
+
         // GET: Account/Login
         public IActionResult Login()
         {
@@ -86,6 +87,40 @@ namespace NoteLibrary.Controllers
             }
 
             return View();
+        }
+
+        public async Task<IActionResult> Profile()
+        {
+            int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
+            var user = await _context.UserTable.FirstOrDefaultAsync(p => p.Id == userid);
+            if(user == null)
+            {
+                return RedirectToAction("Index", "HomeController");
+            }
+            return View(user);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Profile([Bind("Name,Surname,City,University,Department,Email,Password,Id,State,ConfirmPassword")] User user)
+        {
+            if(ModelState.IsValid)
+            {
+                int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
+                var dbUser = await _context.UserTable.FirstOrDefaultAsync(p => p.Id == userid);
+                if(dbUser != null && user.Password ==user.ConfirmPassword)
+                {
+                    dbUser.Name = user.Name;
+                    dbUser.Surname = user.Surname;
+                    dbUser.City = user.City;
+                    dbUser.University = user.University;
+                    dbUser.Department = user.Department;
+                    dbUser.Password = user.Password;
+                    dbUser.ConfirmPassword = user.ConfirmPassword;
+                    dbUser.Email = user.Email;
+                    await _context.SaveChangesAsync();
+                }
+                return RedirectToAction(nameof(Profile));
+            }
+            return View(user);
         }
     }
 }
