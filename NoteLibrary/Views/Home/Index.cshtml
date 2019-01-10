@@ -1,9 +1,49 @@
-﻿
+﻿@model IEnumerable<NoteLibrary.Models.Entities.File>
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
 
-<a href="/Account/Register">Register</a>
-<a href="/Account/Login">Login</a>
+
+
+
+<div class="container">
+    <h1 class="my-4">
+        Ders Notları
+        <small>Anasayfa</small>
+    </h1>
+</div>
+<div class="container">
+
+    <div class="row">
+
+
+        @foreach (var item in Model)
+        {
+            <!-- Blog Entries Column -->
+            <div class="col-md-4">
+                <!-- Blog Post -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title">@Html.DisplayFor(modelItem => item.CourseName)</h4>
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                        <a asp-action="Details" class="btn btn-primary"  asp-route-id="@item.Id">Ders Notunu İncele</a> 
+                    </div>
+                </div>
+            </div>
+
+        }
+
+
+
+    </div>
+</div>
+<!-- Pagination -->
+<ul class="pagination justify-content-center mb-4">
+    <li class="page-item">
+        <a class="page-link" href="#">&larr; Older</a>
+    </li>
+    <li class="page-item disabled">
+        <a class="page-link" href="#">Newer &rarr;</a>
+    </li>
+</ul>

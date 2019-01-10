@@ -54,7 +54,6 @@ namespace NoteLibrary.Controllers
             {
                 ModelState.AddModelError("", "Tekrar Girilen Şifre Hatalı ! Lütfen Tekrar Deneyiniz.");
             }
-
             return View(user);
         }
 
