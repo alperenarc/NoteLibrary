@@ -10,8 +10,12 @@ using MailKit.Net.Smtp;
 using NoteLibrary.Models;
 using System.Net;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+
 using NoteLibrary.Models.Contexts;
 using Microsoft.EntityFrameworkCore;
+
+using Microsoft.AspNetCore.Http;
+
 
 namespace NoteLibrary.Controllers
 {
@@ -21,7 +25,12 @@ namespace NoteLibrary.Controllers
 
         public HomeController(NoteContext context)
         {
+
             _context = context;
+
+            HttpContext.Session.SetInt32("UserId", 0);
+            return View();
+
         }
 
         public async Task<IActionResult> Index()
@@ -31,6 +40,7 @@ namespace NoteLibrary.Controllers
         //Get Method For SendMail
         public IActionResult Contact()
         {
+            HttpContext.Session.SetInt32("UserId", 0);
             return View();
         }
         public IActionResult ErrorPage()
