@@ -27,22 +27,18 @@ namespace NoteLibrary.Controllers
         {
 
             _context = context;
-
-            HttpContext.Session.SetInt32("UserId", 0);
-            return View();
-
         }
-
         public async Task<IActionResult> Index()
         {
+            HttpContext.Session.SetInt32("UserId", 0);
             return View(await _context.FileTable.ToListAsync());
         }
-        //Get Method For SendMail
         public IActionResult Contact()
         {
             HttpContext.Session.SetInt32("UserId", 0);
             return View();
         }
+       
         public IActionResult ErrorPage()
         {
             return View();
