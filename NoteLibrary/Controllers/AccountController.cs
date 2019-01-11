@@ -81,6 +81,7 @@ namespace NoteLibrary.Controllers
                 {
                     // session'a user Id'sini at ve indexe gönder.
                     HttpContext.Session.SetInt32("UserId", kontrol.Id);
+                    HttpContext.Session.SetString("Authorize", "True");
                     return RedirectToAction("Index", "Account");
                 }
             }

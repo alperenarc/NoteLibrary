@@ -10,10 +10,8 @@ using MailKit.Net.Smtp;
 using NoteLibrary.Models;
 using System.Net;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
-
 using NoteLibrary.Models.Contexts;
 using Microsoft.EntityFrameworkCore;
-
 using Microsoft.AspNetCore.Http;
 using Korzh.EasyQuery.Linq;
 
@@ -28,13 +26,10 @@ namespace NoteLibrary.Controllers
 
             _context = context;
         }
-        //public async Task<IActionResult> Index()
-        //{
-        //    HttpContext.Session.SetInt32("UserId", 0);
-        //    return View(await _context.FileTable.ToListAsync());
-        //}
         public async Task<IActionResult> Index(string searchString)
         {
+            HttpContext.Session.SetString("Authorize", "false");
+            
             var file = from m in _context.FileTable
                        select m;
 

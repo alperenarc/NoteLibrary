@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,25 +19,31 @@ namespace NoteLibrary.Controllers
         {
             _context = context;
         }
-
-        //// GET: File
-        //public async Task<IActionResult> Index()
-        //{
-        //    return View(await _context.FileTable.ToListAsync());
-        //}
+        
         public async Task<IActionResult> Index(string searchString)
         {
-            var file = from m in _context.FileTable
-                       select m;
-
-            if (!String.IsNullOrEmpty(searchString))
+            if (HttpContext.Session.GetString("Authorize") == "True")
             {
-                file = file.Where(s => s.CourseName.Contains(searchString));
+                var file = from m in _context.FileTable
+                           select m;
+
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    file = file.Where(s => s.CourseName.Contains(searchString));
+                }
+
+                return View(await file.ToListAsync());
             }
-
-            return View(await file.ToListAsync());
+            else
+            {
+                ModelState.AddModelError("", "Geçersiz Kullanıcı");
+                return View("ErrorPage");
+            }
         }
-
+        public IActionResult ErrorPage()
+        {
+            return View();
+        }
         // GET: File/Details/5
         public async Task<IActionResult> Details(int? id)
         {
