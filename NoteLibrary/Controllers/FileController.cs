@@ -19,10 +19,22 @@ namespace NoteLibrary.Controllers
             _context = context;
         }
 
-        // GET: File
-        public async Task<IActionResult> Index()
+        //// GET: File
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.FileTable.ToListAsync());
+        //}
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.FileTable.ToListAsync());
+            var file = from m in _context.FileTable
+                       select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                file = file.Where(s => s.CourseName.Contains(searchString));
+            }
+
+            return View(await file.ToListAsync());
         }
 
         // GET: File/Details/5
