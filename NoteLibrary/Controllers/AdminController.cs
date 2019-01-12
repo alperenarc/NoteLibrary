@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,14 @@ namespace NoteLibrary.Controllers
         // GET: Account/List
         public async Task<IActionResult> List()
         {
-            return View(await _context.CategoryTable.ToListAsync());
+            if (HttpContext.Session.GetString("AdminSecurity") == "True")
+            {
+                return View(await _context.CategoryTable.ToListAsync());
+            }
+            else
+            {
+                return View("Index");
+            }
         }
         // GET: Account/Login
         public IActionResult Index()
@@ -34,7 +42,8 @@ namespace NoteLibrary.Controllers
         {
             if (username == "notelibadmin" && password == "eru123notelib")
             {
-                return RedirectToAction("Create", "Admin");
+                HttpContext.Session.SetString("AdminSecurity", "True");
+                return RedirectToAction("List", "Admin");
             }
             else
             {
@@ -45,25 +54,40 @@ namespace NoteLibrary.Controllers
         // GET: Admin/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetString("AdminSecurity")=="True")
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var category = await _context.CategoryTable
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+                var category = await _context.CategoryTable
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (category == null)
+                {
+                    return NotFound();
+                }
+
+                return View(category);
+            }
+            else
             {
-                return NotFound();
+                return View("Index");
             }
-
-            return View(category);
+            
         }
 
         // GET: Admin/Create
         public IActionResult Create()
         {
-            return View();
+            if (HttpContext.Session.GetString("AdminSecurity") == "True")
+            {
+                return View();
+            }
+            else
+            {
+                return View("Index");
+            }
         }
 
         // POST: Admin/Create
@@ -85,17 +109,25 @@ namespace NoteLibrary.Controllers
         // GET: Admin/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetString("AdminSecurity") == "True")
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var category = await _context.CategoryTable.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
+                var category = await _context.CategoryTable.FindAsync(id);
+                if (category == null)
+                {
+                    return NotFound();
+                }
+                return View(category);
             }
-            return View(category);
+            else
+            {
+                return View("Index");
+            }
+            
         }
 
         // POST: Admin/Edit/5
@@ -136,19 +168,27 @@ namespace NoteLibrary.Controllers
         // GET: Admin/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetString("AdminSecurity") == "True")
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var category = await _context.CategoryTable
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+                var category = await _context.CategoryTable
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (category == null)
+                {
+                    return NotFound();
+                }
+
+                return View(category);
+            }
+            else
             {
-                return NotFound();
-            }
-
-            return View(category);
+                return View("Index");
+            } 
+            
         }
 
         // POST: Admin/Delete/5

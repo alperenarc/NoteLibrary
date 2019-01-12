@@ -28,7 +28,7 @@ namespace NoteLibrary.Controllers
         }
         public async Task<IActionResult> Index(string searchString)
         {
-            HttpContext.Session.SetString("Authorize", "false");
+            HttpContext.Session.SetString("Authorize", "False");
             
             var file = from m in _context.FileTable
                        select m;

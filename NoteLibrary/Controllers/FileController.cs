@@ -47,25 +47,42 @@ namespace NoteLibrary.Controllers
         // GET: File/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetString("Authorize")=="True")
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var file = await _context.FileTable
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (file == null)
+                var file = await _context.FileTable
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (file == null)
+                {
+                    return NotFound();
+                }
+
+                return View(file);
+            }
+            else
             {
-                return NotFound();
+                return View();
+              
             }
-
-            return View(file);
+            
         }
 
         // GET: File/Create
         public IActionResult Create()
         {
-            return View();
+            if (HttpContext.Session.GetString("Authorize")=="False")
+            {
+                return RedirectToAction("Login","Account");
+            }
+            else
+            {
+                return View();
+            }
+            
         }
 
         // POST: File/Create
@@ -87,17 +104,25 @@ namespace NoteLibrary.Controllers
         // GET: File/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetString("Authorize")=="True")
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var file = await _context.FileTable.FindAsync(id);
-            if (file == null)
-            {
-                return NotFound();
+                var file = await _context.FileTable.FindAsync(id);
+                if (file == null)
+                {
+                    return NotFound();
+                }
+                return View(file);
             }
-            return View(file);
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            
         }
 
         // POST: File/Edit/5
@@ -138,19 +163,26 @@ namespace NoteLibrary.Controllers
         // GET: File/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetString("Authorize")=="True")
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var file = await _context.FileTable
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (file == null)
+                var file = await _context.FileTable
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (file == null)
+                {
+                    return NotFound();
+                }
+
+                return View(file);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Login","Account");
             }
-
-            return View(file);
         }
 
         // POST: File/Delete/5
