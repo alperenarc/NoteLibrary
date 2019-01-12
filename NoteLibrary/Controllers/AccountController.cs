@@ -88,7 +88,13 @@ namespace NoteLibrary.Controllers
 
             return View();
         }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.SetString("Authorize", "False");
+            HttpContext.Session.SetInt32("UserId", 0);
+            return RedirectToAction("Index", "Home");
 
+        }
         public async Task<IActionResult> Profile()
         {
             if (HttpContext.Session.GetInt32("UserId") == null || HttpContext.Session.GetInt32("UserId") ==0)
