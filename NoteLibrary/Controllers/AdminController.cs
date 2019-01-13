@@ -48,8 +48,9 @@ namespace NoteLibrary.Controllers
             else
             {
                 ModelState.AddModelError("", "Geçersiz Kullanıcı");
+                return View();
             }
-            return View();
+            
         }
         // GET: Admin/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
 }
 
 <h2>Create</h2>
@@ -13,33 +14,35 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="CourseName" class="control-label"></label>
-                <input asp-for="CourseName" class="form-control" />
-                <span asp-validation-for="CourseName" class="text-danger"></span>
+                <label class="control-label">CourseName</label>
+                <input type="text" class="form-control" id="courseName" name="courseName" value="">
+                @*<span asp-validation-for="CourseName" class="text-danger"></span>*@
             </div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label class="control-label">Title</label>
+                <input type="text" class="form-control"  id="title" name="title" value=""/>
+                @*<label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>*@
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label class="control-label">Description</label>
+                <input type="text" class="form-control"  id="description" name="description" value="" />
+                @*<label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>*@
             </div>
-            <div class="form-group">
-                <label asp-for="FilePath" class="control-label"></label>
-                <input asp-for="FilePath" class="form-control" />
-                <span asp-validation-for="FilePath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UploadDate" class="control-label"></label>
-                <input asp-for="UploadDate" class="form-control" />
-                <span asp-validation-for="UploadDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+            
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressid" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                </div>
+                <input  type="file" value="upload" id="fileButton">
+            
+            @*<div class="form-group">
+                    <label asp-for="UploadDate" class="control-label"></label>
+                    <input asp-for="UploadDate" class="form-control" />
+                    <span asp-validation-for="UploadDate" class="text-danger"></span>
+                </div>*@
         </form>
     </div>
 </div>
@@ -48,3 +51,99 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+
+
+
+<script src="~/package/dist/sweetalert2.js"></script>
+<script src="~/FirebaseJs/FirebaseConfig.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+<script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+<script>
+    firebase.initializeApp(config);
+    
+    var fileButton = document.getElementById('fileButton');
+    var progressid = document.getElementById('progressid');
+   
+    //Change the file name
+    function guid() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    }
+
+    
+    fileButton.addEventListener('change', function (e) {
+
+        var file = e.target.files[0];
+        var newName = guid(file.name);
+        var url1 = 'files/' + newName;
+        var storageRef = firebase.storage().ref(url1);
+
+        var task = storageRef.put(file);
+
+        task.on('state_changed', function (snapshot) {
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+
+                case firebase.storage.TaskState.PAUSED: // or 'paused'
+                    console.log('Upload is paused');
+                    break;
+                case firebase.storage.TaskState.RUNNING: // or 'running'
+
+                    Swal.showLoading();
+
+                    progressid.setAttribute("aria-valuenow", progress);
+                    progressid.style.width = progress + "%";
+
+                        console.log('Upload is running');
+                    break;
+
+                }
+        }, function (error) {
+            // Handle unsuccessful uploads
+        }, function () {
+            //After the upload data will go database
+            task.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                
+                var courseName = document.getElementById('courseName').value;
+                var title = document.getElementById('title').value;
+                var descrpt = document.getElementById('description').value;
+               
+                $.ajax({
+                    type: "POST",
+                    url: "/File/Create",
+                    data: {
+                        filePath: downloadURL,
+                        addeduserid: 1,
+                        categoryid: 1,
+                        courseName: courseName,
+                        title: title,
+                        description: descrpt
+                    },
+                    success: function (data) {
+                        Swal({
+                            title: 'Teşekkürler !',
+                            type: 'success',
+                            html:
+                                '<p>Dosya Yüklemesi Başarıyla Gerçekleşti!</p>'
+                        }).then(function () {
+                            window.location.href = "/Account/Index";
+                        });
+
+                    },
+
+                });
+
+                console.log('File available at', downloadURL);
+            });
+        });
+
+
+    });
+    </script>

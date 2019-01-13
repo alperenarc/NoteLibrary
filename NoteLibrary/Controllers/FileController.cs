@@ -74,32 +74,57 @@ namespace NoteLibrary.Controllers
         // GET: File/Create
         public IActionResult Create()
         {
-            if (HttpContext.Session.GetString("Authorize")=="False")
+            if (HttpContext.Session.GetString("Authorize") == "False")
             {
-                return RedirectToAction("Login","Account");
+                return RedirectToAction("Login", "Account");
             }
             else
             {
                 return View();
             }
+
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> Create(int addeduserid,int categoryid, string courseName,string title,string description,string filePath)
+        {
+            
+                File file = new File();
+                file.CourseName = courseName;
+                file.Title = title;
+                file.Description = description;
+                file.FilePath = filePath;
+                file.UploadDate = DateTime.Now;
+                
+                _context.Add(file);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            
             
         }
+
+
+
+
+
 
         // POST: File/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CourseName,Title,Description,FilePath,UploadDate,Id,State")] File file)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(file);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(file);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("CourseName,Title,Description,FilePath,UploadDate,Id,State")] File file)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(file);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(file);
+        //}
 
         // GET: File/Edit/5
         public async Task<IActionResult> Edit(int? id)
