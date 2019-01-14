@@ -76,25 +76,23 @@ namespace NoteLibrary.Controllers
                 return RedirectToAction("Login", "Account");
             }
             else
-            {
+            { 
                 return View();
             }
 
         }
         [HttpPost]
-        public async Task<IActionResult> Create(User user,int categoryid, string courseName, string title, string description, string filePath)
+        public async Task<IActionResult> Create(int categoryid, string courseName, string title, string description, string filePath)
         {
             int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
-            //var User = _context.UserTable
-            //    .FirstOrDefaultAsync(p => p.Id == userid);
-            //int ad = user.Id;
-            //ad = userid;
+            var usr = await _context.UserTable
+                .FirstOrDefaultAsync(p => p.Id == userid);
             File file = new File();
             file.CourseName = courseName;
             file.Title = title;
             file.Description = description;
             file.FilePath = filePath;
-            file.AddedUser.Name= "Alperen";
+            file.AddedUser = usr;
             file.UploadDate = DateTime.Now;
             _context.Add(file);
             await _context.SaveChangesAsync();
