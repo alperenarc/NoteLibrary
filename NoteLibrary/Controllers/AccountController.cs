@@ -21,13 +21,22 @@ namespace NoteLibrary.Controllers
         }
 
         // GET: Account
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             if (HttpContext.Session.GetInt32("UserId") == null || HttpContext.Session.GetInt32("UserId") == 0)
             {
                 return RedirectToAction("Index", "Home");
             }
-            return View();
+
+            var file = from m in _context.FileTable
+                       select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                file = file.Where(s => s.CourseName.Contains(searchString));
+            }
+
+            return View(await file.ToListAsync());
         }
 
         // GET: Account/Register
@@ -131,6 +140,22 @@ namespace NoteLibrary.Controllers
                 return RedirectToAction(nameof(Profile));
             }
             return View(user);
+        }
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var file = await _context.FileTable
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (file == null)
+            {
+                return NotFound();
+            }
+
+            return View(file);
         }
 
     }

@@ -19,7 +19,7 @@ namespace NoteLibrary.Controllers
         {
             _context = context;
         }
-        
+
         public async Task<IActionResult> Index(string searchString)
         {
             if (HttpContext.Session.GetString("Authorize") == "True")
@@ -47,28 +47,25 @@ namespace NoteLibrary.Controllers
         // GET: File/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (HttpContext.Session.GetString("Authorize")=="True")
+            if (HttpContext.Session.GetString("Authorize") == "True")
             {
                 if (id == null)
                 {
                     return NotFound();
                 }
-
                 var file = await _context.FileTable
                     .FirstOrDefaultAsync(m => m.Id == id);
                 if (file == null)
                 {
                     return NotFound();
                 }
-
                 return View(file);
             }
             else
             {
                 return View();
-              
             }
-            
+
         }
 
         // GET: File/Create
@@ -84,52 +81,30 @@ namespace NoteLibrary.Controllers
             }
 
         }
-
-
-
         [HttpPost]
-        public async Task<IActionResult> Create(int addeduserid,int categoryid, string courseName,string title,string description,string filePath)
+        public async Task<IActionResult> Create(User user,int categoryid, string courseName, string title, string description, string filePath)
         {
-            
-                File file = new File();
-                file.CourseName = courseName;
-                file.Title = title;
-                file.Description = description;
-                file.FilePath = filePath;
-                file.UploadDate = DateTime.Now;
-                
-                _context.Add(file);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            
-            
+            int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
+            //var User = _context.UserTable
+            //    .FirstOrDefaultAsync(p => p.Id == userid);
+            //int ad = user.Id;
+            //ad = userid;
+            File file = new File();
+            file.CourseName = courseName;
+            file.Title = title;
+            file.Description = description;
+            file.FilePath = filePath;
+            file.AddedUser.Name= "Alperen";
+            file.UploadDate = DateTime.Now;
+            _context.Add(file);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
-
-
-
-
-
-
-        // POST: File/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("CourseName,Title,Description,FilePath,UploadDate,Id,State")] File file)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(file);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(file);
-        //}
-
         // GET: File/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (HttpContext.Session.GetString("Authorize")=="True")
+            if (HttpContext.Session.GetString("Authorize") == "True")
             {
                 if (id == null)
                 {
@@ -147,12 +122,10 @@ namespace NoteLibrary.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            
+
         }
 
         // POST: File/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CourseName,Title,Description,FilePath,UploadDate,Id,State")] File file)
@@ -188,7 +161,7 @@ namespace NoteLibrary.Controllers
         // GET: File/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (HttpContext.Session.GetString("Authorize")=="True")
+            if (HttpContext.Session.GetString("Authorize") == "True")
             {
                 if (id == null)
                 {
@@ -206,7 +179,7 @@ namespace NoteLibrary.Controllers
             }
             else
             {
-                return RedirectToAction("Login","Account");
+                return RedirectToAction("Login", "Account");
             }
         }
 
