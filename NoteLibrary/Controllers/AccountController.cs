@@ -141,6 +141,7 @@ namespace NoteLibrary.Controllers
             }
             return View(user);
         }
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -150,6 +151,7 @@ namespace NoteLibrary.Controllers
 
             var file = await _context.FileTable
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (file == null)
             {
                 return NotFound();

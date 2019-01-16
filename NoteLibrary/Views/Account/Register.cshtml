@@ -4,13 +4,11 @@
     ViewData["Title"] = "Register";
 }
 
-
-
-<h2>Kullanıcı Kaydı</h2>
-<hr />
-<div class="container">
+<div class="container mb-2 mt-2">
+    <h2>Kullanıcı Kaydı</h2>
+    <hr />
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <form asp-action="Register">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="col-md-12">
@@ -79,13 +77,10 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" value="Kaydol" class="btn btn-default" />
+                    <input type="submit" value="Kaydol" class="btn btn-warning" />
+                    <a asp-action="Home/Index" class="btn btn-danger">Geri Dön</a>
                 </div>
             </form>
         </div>
-    </div>
-
-    <div>
-        <a asp-action="Home/Index">Geri Dön</a>
     </div>
 </div>
