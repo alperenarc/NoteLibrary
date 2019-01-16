@@ -4,51 +4,39 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>File</h4>
+<div class="container">
+    <h2 class="pt-2">@Html.DisplayFor(model => model.CourseName) Ders Notunun Detayı</h2>
+    <h4>Dosya Detayı</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.CourseName)
+            Ders Adı
         </dt>
         <dd>
             @Html.DisplayFor(model => model.CourseName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Title)
+            Başlık
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Title)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            Açıklama
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.FilePath)
+            Ekleme Bilgisi
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.FilePath)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UploadDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UploadDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.State)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.State)
+            <span class="bg-danger text-white"> @Html.DisplayFor(model => model.AddedUser.Id) </span> Tarafından
+            @Html.DisplayFor(model => model.UploadDate) Tarihinde Eklendi.
         </dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div class="pb-2">
+        <a asp-action="Index" class="btn btn-danger">Geri Dön</a>
+        <a target="_blank" href="@Html.DisplayFor(model => model.FilePath)" class="btn btn-warning">İndir</a>
+    </div>
 </div>

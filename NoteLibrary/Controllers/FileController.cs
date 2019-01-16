@@ -88,8 +88,10 @@ namespace NoteLibrary.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> Create(FileCreateViewModel vm)
+        public async Task<IActionResult> Create(FileCreateViewModel vm,string categoryLessonId)
         {
+            var categoryid = Convert.ToInt32(categoryLessonId); 
+            var ctrg = await _context.CategoryTable.FirstOrDefaultAsync(p => p.Id == categoryid );
             int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
             var usr = await _context.UserTable.FirstOrDefaultAsync(p => p.Id == userid);
             File file = new File();
@@ -99,6 +101,7 @@ namespace NoteLibrary.Controllers
             file.FilePath = vm.FilePath;
             file.AddedUser = usr;
             file.UploadDate = DateTime.Now;
+            file.Category = ctrg;
             //file.Category =vm.Lesson;
             _context.Add(file);
             await _context.SaveChangesAsync();
