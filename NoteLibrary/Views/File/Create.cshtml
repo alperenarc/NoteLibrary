@@ -1,4 +1,4 @@
-﻿@model NoteLibrary.Models.Entities.File
+﻿@model NoteLibrary.ViewModels.FileCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -25,6 +25,23 @@
                 <label class="control-label">Description</label>
                 <input type="text" class="form-control" id="description" name="description" value="" />
             </div>
+
+            <div class="form-group">
+                <label class="control-label">Şehir</label>
+                <select asp-for="City" id="cityCategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.ListofCities,"Id","Name"))"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Universite</label>
+                <select asp-for="University" id="uniCategoryId" class="form-control" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Department</label>
+                <select asp-for="Department" id="depCategoryId" class="form-control" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Ders</label>
+                <select asp-for="Lesson"  id="lesCategoryId" class="form-control" onchange="onChange(this)" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
+            </div>
             <div class="progress">
                 <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressid" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
             </div>
@@ -38,12 +55,69 @@
 </div>
 
 
-
+<script src="~/lib/jquery/dist/jquery.js"></script>
 
 <script src="~/package/dist/sweetalert2.js"></script>
 <script src="~/FirebaseJs/FirebaseConfig.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
 <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+
+<script type="text/javascript">
+    function onChange(t) {
+        var id = t.value;
+       
+        alert(id);
+    };
+    $(document).ready(function () {
+        var items = "<option value='0'>Select</option>";
+        $('#cityId').html(items);
+        $('#uniId').html(items);
+        $('#depId').html(items);
+    });
+    $(document).ready(function () {
+        $('#cityCategoryId').change(function () {
+            var url = '@Url.Content("~/")' + "File/GetUniversities";
+            var ddlsource = "#cityCategoryId";
+            $.getJSON(url, { cityCategoryId : $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#uniCategoryId").empty();
+                $.each(data, function (i, uni) {
+                    items += "<option value='" + uni.value + "'>" + uni.text + "</option>";
+                });
+                $('#uniCategoryId').html(items);
+            });
+        });
+    });
+    $(document).ready(function () {
+        $('#uniCategoryId').change(function () {
+            var url = '@Url.Content("~/")' + "File/GetDepartment";
+            var ddlsource = "#uniCategoryId";
+            $.getJSON(url, { uniCategoryId: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#depCategoryId").empty();
+                $.each(data, function (i, uni) {
+                    items += "<option value='" + uni.value + "'>" + uni.text + "</option>";
+                });
+                $('#depCategoryId').html(items);
+            });
+        });
+    });
+     $(document).ready(function () {
+         $('#depCategoryId').change(function () {
+             var url = '@Url.Content("~/")' + "File/GetLesson";
+             var ddlsource = "#depCategoryId";
+             $.getJSON(url, { depCategoryId: $(ddlsource).val() }, function (data) {
+                var items = '';
+                 $("#lesCategoryId").empty();
+                $.each(data, function (i, uni) {
+                    items += "<option value='" + uni.value + "'>" + uni.text + "</option>";
+                });
+                 $('#lesCategoryId').html(items);
+            });
+        });
+    });
+</script>
+
 <script>
     firebase.initializeApp(config);
 
@@ -131,4 +205,7 @@
 
 
     });
+
+
+
 </script>
