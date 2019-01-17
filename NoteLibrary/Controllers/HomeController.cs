@@ -74,7 +74,7 @@ namespace NoteLibrary.Controllers
                 {
                     //587
                     client.Connect("smtp.gmail.com", 587, false);
-                    client.Authenticate("eren.arc.eren@gmail.com", "alparc817ismail.");
+                    client.Authenticate("eren.arc.eren@gmail.com", "*****");
                     client.Send(message);
                     client.Disconnect(true);
                 };

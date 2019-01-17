@@ -2,34 +2,29 @@
 @{
     ViewData["Title"] = "Index";
 }
+<div class="container">
+    <h2>Admin</h2>
 
-<h2>Admin</h2>
-
-@using (Html.BeginForm("Index", "Admin"))
-{
-    <div class="row">
-        <div class="col-md-6 col-md-offset-2">
-            <label>Kullanıcı Adı</label>
-            <div class="form-group">
-                <input type="text" name="username" class="form-group" />
+    @using (Html.BeginForm("Index", "Admin"))
+    {
+        <div class="row">
+            <div class="col-md-6 col-md-offset-2">
+                <label>Kullanıcı Adı</label>
+                <div class="form-group">
+                    <input type="text" name="username" class="form-group" />
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-2">
+                <label>şifre</label>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-group" />
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-2">
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Giriş yap</button>
+                </div>
             </div>
         </div>
-        <div class="col-md-6 col-md-offset-2">
-            <label>şifre</label>
-            <div class="form-group">
-                <input type="password" name="password" class="form-group" />
-            </div>
-        </div>
-        <div class="col-md-6 col-md-offset-2">
-            <div class="form-group">
-                <button class="btn btn-primary" type="submit">Giriş yap</button>
-            </div>
-        </div>
-    </div>
-}
-
-
-
-
-
-
+    }
+</div>

@@ -24,7 +24,7 @@ namespace NoteLibrary.Controllers
 
         public async Task<IActionResult> Index(string searchString)
         {
-            if (HttpContext.Session.GetString("Authorize") == "True")
+            if (HttpContext.Session.GetString("AdminSecurity") == "True")
             {
                 var file = from m in _context.FileTable
                            select m;
@@ -112,7 +112,7 @@ namespace NoteLibrary.Controllers
         // GET: File/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (HttpContext.Session.GetString("Authorize") == "True")
+            if (HttpContext.Session.GetString("AdminSecurity") == "True")
             {
                 if (id == null)
                 {
@@ -169,7 +169,7 @@ namespace NoteLibrary.Controllers
         // GET: File/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (HttpContext.Session.GetString("Authorize") == "True")
+            if (HttpContext.Session.GetString("AdminSecurity") == "True")
             {
                 if (id == null)
                 {
