@@ -65,8 +65,6 @@
 <script type="text/javascript">
     function onChange(t) {
         var id = t.value;
-       
-        alert(id);
     };
     $(document).ready(function () {
         var items = "<option value='0'>Select</option>";
@@ -174,14 +172,15 @@
                 var courseName = document.getElementById('courseName').value;
                 var title = document.getElementById('title').value;
                 var descrpt = document.getElementById('description').value;
+                var categorylesson = document.getElementById('lesCategoryId').value;
 
                 $.ajax({
                     type: "POST",
                     url: "/File/Create",
                     data: {
                         filePath: downloadURL,
-                        categoryid: 1,
                         courseName: courseName,
+                        categoryLessonId: categorylesson,
                         title: title,
                         description: descrpt
                     },

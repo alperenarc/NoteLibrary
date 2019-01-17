@@ -89,13 +89,14 @@ namespace NoteLibrary.Controllers
                 return NotFound();
             }
 
-            var file = await _context.FileTable
+            var file = await _context.FileTable.Include(p => p.AddedUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (file == null)
             {
                 return NotFound();
             }
-
+            
             return View(file);
         }
 
