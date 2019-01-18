@@ -15,10 +15,6 @@
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label class="control-label">CourseName</label>
-                    <input type="text" class="form-control" id="courseName" name="courseName" value="">
-                </div>
-                <div class="form-group">
                     <label class="control-label">Title</label>
                     <input type="text" class="form-control" id="title" name="title" value="" />
                 </div>
@@ -50,12 +46,7 @@
             </form>
         </div>
     </div>
-
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
-
-
+ 
     <script src="~/lib/jquery/dist/jquery.js"></script>
 
     <script src="~/package/dist/sweetalert2.js"></script>
@@ -133,9 +124,7 @@
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
         }
 
-
         fileButton.addEventListener('change', function (e) {
-
             var file = e.target.files[0];
             var newName = guid(file.name);
             var url1 = 'files/' + newName;
@@ -166,11 +155,20 @@
                 }
             }, function (error) {
                 // Handle unsuccessful uploads
+                console.log(error)
+                Swal({
+                    type: 'Hata',
+                    title: 'Oops...',
+                    text: 'Birşeyler yanlış gitti ve attığınız ders notu sisteme yüklenemedi.',
+                }).then(function () {
+                    window.location.href = "/Account/Index";
+                });
+
+
+
             }, function () {
                 //After the upload data will go database
                 task.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-
-                    var courseName = document.getElementById('courseName').value;
                     var title = document.getElementById('title').value;
                     var descrpt = document.getElementById('description').value;
                     var categorylesson = document.getElementById('lesCategoryId').value;
@@ -180,7 +178,7 @@
                         url: "/File/Create",
                         data: {
                             filePath: downloadURL,
-                            courseName: courseName,
+                            //courseName: courseName,
                             categoryLessonId: categorylesson,
                             title: title,
                             description: descrpt

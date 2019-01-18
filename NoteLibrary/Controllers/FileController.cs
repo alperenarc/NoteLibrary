@@ -95,7 +95,7 @@ namespace NoteLibrary.Controllers
             int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
             var usr = await _context.UserTable.FirstOrDefaultAsync(p => p.Id == userid);
             File file = new File();
-            file.CourseName = vm.CourseName;
+            file.CourseName = ctrg.Name;
             file.Title = vm.Title;
             file.Description = vm.Description;
             file.FilePath = vm.FilePath;
