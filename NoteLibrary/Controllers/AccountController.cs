@@ -149,7 +149,7 @@ namespace NoteLibrary.Controllers
                 return NotFound();
             }
 
-            var file = await _context.FileTable
+            var file = await _context.FileTable.Include(p => p.AddedUser).Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (file == null)
@@ -159,6 +159,8 @@ namespace NoteLibrary.Controllers
 
             return View(file);
         }
+
+        
 
     }
 }
