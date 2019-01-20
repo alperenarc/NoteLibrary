@@ -13,49 +13,109 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label class="control-label" asp-for="Name"></label>
-                    <input type="text" asp-for="Name" class="form-control" />
+                    <input type="text" id="Name" asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label class="control-label" asp-for="Surname"></label>
-                    <input type="text" asp-for="Surname" class="form-control" />
+                    <input type="text" id="Surname" asp-for="Surname" class="form-control" />
                     <span asp-validation-for="Surname" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label class="control-label" asp-for="Email"></label>
-                    <input type="email" asp-for="Email" class="form-control" />
+                    <input type="email" id="Email" asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label class="control-label" asp-for="City"></label>
-                    <input type="text" asp-for="City" class="form-control" />
+                    <input type="text" id="City" asp-for="City" class="form-control" />
                     <span asp-validation-for="City" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label class="control-label" asp-for="University"></label>
-                    <input type="text" asp-for="University" class="form-control" />
+                    <input type="text" id="University" asp-for="University" class="form-control" />
                     <span asp-validation-for="University" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label class="control-label" asp-for="Department"></label>
-                    <input type="text" asp-for="Department" class="form-control" />
+                    <input type="text" id="Department" asp-for="Department" class="form-control" />
                     <span asp-validation-for="Department" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" asp-for="Password"></label>
-                    <input type="password" maxlength="12" asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <label class="control-label">Eski Şifre</label>
+                    <input type="password" id="OldPassword" maxlength="12" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label class="control-label" asp-for="ConfirmPassword"></label>
-                    <input type="password" asp-for="ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    <label class="control-label">Yeni Şifre</label>
+                    <input type="password" id="NewPassword" maxlength="12" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Bilgilerimi Güncelle" class="btn btn-warning" />
+                    <label class="control-label">Yeni Şifre Tekrar</label>
+                    <input type="password" id="ConfirmPassword" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="button" id="Submit" value="Bilgilerimi Güncelle" class="btn btn-warning" />
                     <a class="btn btn-danger" href="/Account/Index">Geri Dön</a>
                 </div>
             </form>
         </div>
     </div>
-</div>  
+</div>
+
+<script src="~/package/dist/sweetalert2.js"></script>
+<script>
+    var Submit = document.getElementById('Submit');
+
+    Submit.addEventListener('click', function () {
+        var newpassword = document.getElementById('NewPassword').value;
+        var confirmpassword = document.getElementById('ConfirmPassword').value;
+        var name = document.getElementById('Name').value;
+        var surname = document.getElementById('Surname').value;
+        var city = document.getElementById('City').value;
+        var university = document.getElementById('University').value;
+        var department = document.getElementById('Department').value;
+        var email = document.getElementById('Email').value;
+        var oldpassword = document.getElementById('OldPassword').value;
+        $.ajax({
+            type: "POST",
+            url: "/Account/Profile",
+            data: {
+                
+                OldPassword: oldpassword,
+                NewPassword: newpassword,
+                NewPasswordConfirm: confirmpassword,
+                Name: name,
+                Surname: surname,
+                City: city,
+                Department: department,
+                Email: email,
+                University: university
+            },
+            success: function (returndata) {
+                if (returndata.ok) {
+
+                    Swal({
+                        title: 'Teşekkürler !',
+                        type: 'success',
+                        html:
+                            '<p>Güncelleme işlemi başarı ile gerçekleşti!</p>'
+                    }).then(function () {
+                        window.location.href = returndata.newurl;
+                    });
+                }
+
+                else {
+                    Swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Alanlar boş geçilemez veya girilen şifre tekrar girilen şifre ile aynı olmalı!'
+                    })
+                }
+
+
+            }
+        });
+
+    });
+
+</script>

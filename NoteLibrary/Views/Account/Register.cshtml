@@ -9,78 +9,122 @@
     <hr />
     <div class="row">
         <div class="col-md-12">
-            <form asp-action="Register">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
                 <div class="col-md-12">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="Name" class="control-label"></label>
-                            <input asp-for="Name" class="form-control" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
+                            <label  class="control-label">İsim</label>
+                            <input id="Name" class="form-control" />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="Surname" class="control-label"></label>
-                            <input asp-for="Surname" class="form-control" />
-                            <span asp-validation-for="Surname" class="text-danger"></span>
+                            <label class="control-label">Soyisim</label>
+                            <input id="Surname" class="form-control" />
                         </div>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="City" class="control-label"></label>
-                            <input asp-for="City" class="form-control" />
-                            <span asp-validation-for="City" class="text-danger"></span>
+                            <label  class="control-label">Şehir</label>
+                            <input id="City" class="form-control" />
+                            
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="University" class="control-label"></label>
-                            <input asp-for="University" class="form-control" />
-                            <span asp-validation-for="University" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="Department" class="control-label"></label>
-                            <input asp-for="Department" class="form-control" />
-                            <span asp-validation-for="Department" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="Email" class="control-label"></label>
-                            <input asp-for="Email" class="form-control" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <label  class="control-label">Üniversite</label>
+                            <input id="University" class="form-control" />
                         </div>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="Password" class="control-label"></label>
-                            <input asp-for="Password" class="form-control" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <label class="control-label">Bölüm</label>
+                            <input id="Department" class="form-control" />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="ConfirmPassword" class="control-label"></label>
-                            <input asp-for="ConfirmPassword" class="form-control" />
-                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            <label class="control-label">E-mail</label>
+                            <input id="Email" type="email" class="form-control" />                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label  class="control-label">Şifre</label>
+                            <input id="Password" type="password" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Şifre Tekrar</label>
+                            <input id="ConfirmPassword" type="password" class="form-control" />
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <input type="submit" value="Kaydol" class="btn btn-warning" />
-                    <a asp-action="Home/Index" class="btn btn-danger">Geri Dön</a>
-                </div>
-            </form>
+                
+                    <input type="button" id="Submit" value="Kaydol" class="btn btn-warning" />
+                    <a href="/Home/Index" class="btn btn-danger">Geri Dön</a>
+                
         </div>
     </div>
 </div>
+<script src="~/package/dist/sweetalert2.js"></script>
+<script>
+    var Submit = document.getElementById('Submit');
+    
+    Submit.addEventListener('click', function () {
+        var password = document.getElementById('Password').value;
+        var confirmpassword = document.getElementById('ConfirmPassword').value;
+        var name = document.getElementById('Name').value;
+        var surname = document.getElementById('Surname').value;
+        var city = document.getElementById('City').value;
+        var university = document.getElementById('University').value;
+        var department = document.getElementById('Department').value;
+        var email = document.getElementById('Email').value;
+        $.ajax({
+            type: "POST",
+            url: "/Account/Register",
+            data: {
+                Password: password,
+                ConfirmPassword: confirmpassword,
+                Name: name,
+                Surname: surname,
+                City: city,
+                Department: department,
+                Email: email,
+                University: university
+            },
+            success: function (returndata) {
+                if (returndata.ok) {
+
+                    Swal({
+                        title: 'Teşekkürler !',
+                        type: 'success',
+                        html:
+                            '<p>Kayıt işlemi başarı ile gerçekleşti!</p>'
+                    }).then(function () {
+                        window.location.href = returndata.newurl;
+                    });
+                }
+
+                else {
+                    Swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Alanlar boş geçilemez veya girilen şifre tekrar girilen şifre ile aynı olmalı!'
+                    })
+                }
+                    
+
+            }
+        });
+
+    });
+
+</script>
