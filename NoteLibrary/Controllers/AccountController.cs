@@ -50,18 +50,29 @@ namespace NoteLibrary.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([Bind("Name,Surname,City,University,Department,Email,Password,Id,State,ConfirmPassword")] User user)
         {
-            if (user.Password == user.ConfirmPassword)
+            var User = _context.UserTable.Where(p => p.Email == user.Email);
+
+
+            if (User != null)
             {
-                if (ModelState.IsValid)
-                {
-                    _context.Add(user);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("Login", "Account");
-                }
+                ModelState.AddModelError("", "Bu E-mail'e ait bir hesap vardır ! Lütfen Tekrar Deneyiniz.");
             }
+            
             else
             {
-                ModelState.AddModelError("", "Tekrar Girilen Şifre Hatalı ! Lütfen Tekrar Deneyiniz.");
+                if (user.Password == user.ConfirmPassword)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        _context.Add(user);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction("Login", "Account");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Tekrar Girilen Şifre Hatalı ! Lütfen Tekrar Deneyiniz.");
+                }
             }
             return View(user);
         }
