@@ -29,7 +29,7 @@ namespace NoteLibrary.Controllers
         public async Task<IActionResult> Index(string searchString)
         {
             HttpContext.Session.SetString("Authorize", "False");
-            
+
             var file = from m in _context.FileTable
                        select m;
 
@@ -74,7 +74,7 @@ namespace NoteLibrary.Controllers
                 {
                     //587
                     client.Connect("smtp.gmail.com", 587, false);
-                    client.Authenticate("eren.arc.eren@gmail.com", "alparc817ismail.");
+                    client.Authenticate("eren.arc.eren@gmail.com", "*****");
                     client.Send(message);
                     client.Disconnect(true);
                 };
@@ -89,7 +89,7 @@ namespace NoteLibrary.Controllers
                 return NotFound();
             }
 
-            var file = await _context.FileTable.Include(p => p.AddedUser)
+            var file = await _context.FileTable.Include(p => p.AddedUser).Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             
             if (file == null)

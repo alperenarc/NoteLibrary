@@ -5,64 +5,56 @@
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
 }
 
-<h2>Create</h2>
 
-<h4>File</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label class="control-label">CourseName</label>
-                <input type="text" class="form-control" id="courseName" name="courseName" value="">
-            </div>
-            <div class="form-group">
-                <label class="control-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" value="" />
-            </div>
-            <div class="form-group">
-                <label class="control-label">Description</label>
-                <input type="text" class="form-control" id="description" name="description" value="" />
-            </div>
+<div class="container">
+    <h2>Ders Notu Oluştur</h2>
+    <h4>File</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" value="" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Description</label>
+                    <input type="text" class="form-control" id="description" name="description" value="" />
+                </div>
 
-            <div class="form-group">
-                <label class="control-label">Şehir</label>
-                <select asp-for="City" id="cityCategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.ListofCities,"Id","Name"))"></select>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Universite</label>
-                <select asp-for="University" id="uniCategoryId" class="form-control" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Department</label>
-                <select asp-for="Department" id="depCategoryId" class="form-control" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Ders</label>
-                <select asp-for="Lesson"  id="lesCategoryId" class="form-control" onchange="onChange(this)" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
-            </div>
-            <div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressid" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-            </div>
-            <input type="file" value="upload" id="fileButton">
-        </form>
+                <div class="form-group">
+                    <label class="control-label">Şehir</label>
+                    <select asp-for="City" id="cityCategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.ListofCities,"Id","Name"))"></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Universite</label>
+                    <select asp-for="University" id="uniCategoryId" class="form-control" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Department</label>
+                    <select asp-for="Department" id="depCategoryId" class="form-control" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Ders</label>
+                    <select asp-for="Lesson" id="lesCategoryId" class="form-control" onchange="onChange(this)" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressid" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                </div>
+                <input type="file" value="upload" id="fileButton">
+            </form>
+        </div>
     </div>
-</div>
+ 
+    <script src="~/lib/jquery/dist/jquery.js"></script>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <script src="~/package/dist/sweetalert2.js"></script>
+    <script src="~/FirebaseJs/FirebaseConfig.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
 
-
-<script src="~/lib/jquery/dist/jquery.js"></script>
-
-<script src="~/package/dist/sweetalert2.js"></script>
-<script src="~/FirebaseJs/FirebaseConfig.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
-<script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
-
-<script type="text/javascript">
+    <script type="text/javascript">
     function onChange(t) {
         var id = t.value;
     };
@@ -114,97 +106,105 @@
             });
         });
     });
-</script>
+    </script>
 
-<script>
-    firebase.initializeApp(config);
+    <script>
+        firebase.initializeApp(config);
 
-    var fileButton = document.getElementById('fileButton');
-    var progressid = document.getElementById('progressid');
+        var fileButton = document.getElementById('fileButton');
+        var progressid = document.getElementById('progressid');
 
-    //Change the file name
-    function guid() {
-        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
-        }
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    }
-
-
-    fileButton.addEventListener('change', function (e) {
-
-        var file = e.target.files[0];
-        var newName = guid(file.name);
-        var url1 = 'files/' + newName;
-        var storageRef = firebase.storage().ref(url1);
-
-        var task = storageRef.put(file);
-
-        task.on('state_changed', function (snapshot) {
-            // Observe state change events such as progress, pause, and resume
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
-            switch (snapshot.state) {
-
-                case firebase.storage.TaskState.PAUSED: // or 'paused'
-                    console.log('Upload is paused');
-                    break;
-                case firebase.storage.TaskState.RUNNING: // or 'running'
-
-                    Swal.showLoading();
-
-                    progressid.setAttribute("aria-valuenow", progress);
-                    progressid.style.width = progress + "%";
-
-                    console.log('Upload is running');
-                    break;
-
+        //Change the file name
+        function guid() {
+            function s4() {
+                return Math.floor((1 + Math.random()) * 0x10000)
+                    .toString(16)
+                    .substring(1);
             }
-        }, function (error) {
-            // Handle unsuccessful uploads
-        }, function () {
-            //After the upload data will go database
-            task.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+        }
 
-                var courseName = document.getElementById('courseName').value;
-                var title = document.getElementById('title').value;
-                var descrpt = document.getElementById('description').value;
-                var categorylesson = document.getElementById('lesCategoryId').value;
+        fileButton.addEventListener('change', function (e) {
+            var file = e.target.files[0];
+            var newName = guid(file.name);
+            var url1 = 'files/' + newName;
+            var storageRef = firebase.storage().ref(url1);
 
-                $.ajax({
-                    type: "POST",
-                    url: "/File/Create",
-                    data: {
-                        filePath: downloadURL,
-                        courseName: courseName,
-                        categoryLessonId: categorylesson,
-                        title: title,
-                        description: descrpt
-                    },
-                    success: function (data) {
-                        Swal({
-                            title: 'Teşekkürler !',
-                            type: 'success',
-                            html:
-                                '<p>Dosya Yüklemesi Başarıyla Gerçekleşti!</p>'
-                        }).then(function () {
-                            window.location.href = "/Account/Index";
-                        });
+            var task = storageRef.put(file);
 
-                    },
+            task.on('state_changed', function (snapshot) {
+                // Observe state change events such as progress, pause, and resume
+                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
 
+                    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                        console.log('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING: // or 'running'
+
+                        Swal.showLoading();
+
+                        progressid.setAttribute("aria-valuenow", progress);
+                        progressid.style.width = progress + "%";
+
+                        console.log('Upload is running');
+                        break;
+
+                }
+            }, function (error) {
+                // Handle unsuccessful uploads
+                console.log(error)
+                Swal({
+                    type: 'Hata',
+                    title: 'Oops...',
+                    text: 'Birşeyler yanlış gitti ve attığınız ders notu sisteme yüklenemedi.',
+                }).then(function () {
+                    window.location.href = "/Account/Index";
                 });
 
-                console.log('File available at', downloadURL);
+
+
+            }, function () {
+                //After the upload data will go database
+                task.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                    var title = document.getElementById('title').value;
+                    var descrpt = document.getElementById('description').value;
+                    var categorylesson = document.getElementById('lesCategoryId').value;
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/File/Create",
+                        data: {
+                            filePath: downloadURL,
+                            //courseName: courseName,
+                            categoryLessonId: categorylesson,
+                            title: title,
+                            description: descrpt
+                        },
+                        success: function (data) {
+                            Swal({
+                                title: 'Teşekkürler !',
+                                type: 'success',
+                                html:
+                                    '<p>Dosya Yüklemesi Başarıyla Gerçekleşti!</p>'
+                            }).then(function () {
+                                window.location.href = "/Account/Index";
+                            });
+
+                        },
+
+                    });
+
+                    console.log('File available at', downloadURL);
+                });
             });
+
+
         });
 
 
-    });
 
-
-
-</script>
+    </script>
+</div>

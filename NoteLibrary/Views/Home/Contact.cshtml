@@ -2,45 +2,45 @@
 @{
     ViewData["Title"] = "Contact";
 }
+<div class="container">
+    <h2>SendMail</h2>
 
-<h2>SendMail</h2>
+    @using (Html.BeginForm("SendMail", "Home"))
+    {
+        <div class="row">
+            <div class="col-md-6 col-md-offset-2">
+                <label>İsim</label>
+                <div class="form-group">
+                    <input type="text" name="name" class="form-group" />
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-2">
+                <label>E-Mail</label>
+                <div class="form-group">
+                    <input type="email" name="email" class="form-group" />
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-2">
+                <label>Başlık</label>
+                <div class="form-group">
+                    <input type="text" name="subject" class="form-group" />
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-2">
+                <label>Mesaj</label>
+                <div class="form-group">
+                    <textarea name="messagecontent" type="text" class="form-group"></textarea>
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-2">
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Mesaj Gönder</button>
+                </div>
+            </div>
+        </div>
+    }
 
-@using (Html.BeginForm("SendMail", "Home"))
-{
-<div class="row">
-    <div class="col-md-6 col-md-offset-2">
-        <label>İsim</label>
-        <div class="form-group">
-            <input type="text" name="name" class="form-group" />
-        </div>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <label>E-Mail</label>
-        <div class="form-group">
-            <input type="email" name="email" class="form-group" />
-        </div>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <label>Başlık</label>
-        <div class="form-group">
-            <input type="text" name="subject" class="form-group" />
-        </div>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <label>Mesaj</label>
-        <div class="form-group">
-            <textarea name="messagecontent" type="text" class="form-group"></textarea>
-        </div>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <div class="form-group">
-            <button class="btn btn-primary" type="submit">Mesaj Gönder</button>
-        </div>
-    </div>
 </div>
-}
-
-
 
 
 
