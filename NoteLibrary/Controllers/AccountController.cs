@@ -47,34 +47,40 @@ namespace NoteLibrary.Controllers
 
         // POST: Account/Register
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind("Name,Surname,City,University,Department,Email,Password,Id,State,ConfirmPassword")] User user)
+        public async Task<IActionResult> Register(string Name, string Surname, string University, string Department, string City, string Email, string Password, string ConfirmPassword)
         {
-            var User = _context.UserTable.Where(p => p.Email == user.Email);
-
-
+            var User = await _context.UserTable.FirstOrDefaultAsync(p => p.Email == Email);
             if (User != null)
             {
                 ModelState.AddModelError("", "Bu E-mail'e ait bir hesap vardır ! Lütfen Tekrar Deneyiniz.");
             }
-            
             else
             {
-                if (user.Password == user.ConfirmPassword)
+                if (Password == ConfirmPassword && Email != null && Name != null &&
+                    Surname != null && University != null && Department != null && City != null)
                 {
-                    if (ModelState.IsValid)
-                    {
-                        _context.Add(user);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction("Login", "Account");
-                    }
+
+                    User user1 = new User();
+                    string hashedPassword = Helper.PasswordHelper.HashPassword(Password);
+                    user1.City = City;
+                    user1.Department = Department;
+                    user1.Email = Email;
+                    user1.Hash = hashedPassword;
+                    user1.Name = Name;
+                    user1.Surname = Surname;
+                    user1.University = University;
+                    _context.Add(user1);
+                    await _context.SaveChangesAsync();
+                    return Json(new { ok = true, newurl = Url.Action("Login") });
+
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Tekrar Girilen Şifre Hatalı ! Lütfen Tekrar Deneyiniz.");
+                    return Json(new { ok = false, message = "Şifre veya Kullanıcı Adı Yanlış" });
+                    //ModelState.AddModelError("", "Tekrar Girilen Şifre Hatalı ! Lütfen Tekrar Deneyiniz.");
                 }
             }
-            return View(user);
+            return View();
         }
 
 
@@ -84,28 +90,46 @@ namespace NoteLibrary.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(User user)
+        public async Task<IActionResult> Login(string Email, string Password)
         {
 
             //Girilen bilgilerle uyuşan user var mı
             var kontrol = await _context.UserTable
-                .FirstOrDefaultAsync(p => p.Email == user.Email && p.Password == user.Password);
-            if (kontrol != null)
+                .FirstOrDefaultAsync(p => p.Email == Email);
+
+            try
             {
-                //state durumu nedir
-                if (kontrol.State == false)
+                string correctHash = kontrol.Hash;
+                bool Varmi = Helper.PasswordHelper.ValidatePassword(Password, correctHash);
+
+                if (Varmi == true && kontrol != null)
                 {
-                    ModelState.AddModelError("", "Geçersiz Kullanıcı");
-                }
-                else
-                {
-                    // session'a user Id'sini at ve indexe gönder.
-                    HttpContext.Session.SetInt32("UserId", kontrol.Id);
-                    HttpContext.Session.SetString("Authorize", "True");
-                    return RedirectToAction("Index", "Account");
+
+                    //state durumu nedir
+                    if (kontrol.State == false)
+                    {
+                        Console.Write("geçersiz");
+                        ModelState.AddModelError("", "Geçersiz Kullanıcı");
+                    }
+                    else
+                    {
+
+                        // session'a user Id'sini at ve indexe gönder.
+                        HttpContext.Session.SetInt32("UserId", kontrol.Id);
+                        HttpContext.Session.SetString("Authorize", "True");
+                        Console.Write("Doğru");
+                        return Json(new { ok = true, newurl = Url.Action("Index") });
+                    }
+
                 }
             }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Şifre veya Kullanıcı Adı Yanlış");
+                Console.Write("Şifre veya Kullanıcı Adı Yanlış");
+                return Json(new { ok = false, message = "Şifre veya Kullanıcı Adı Yanlış" });
 
+            }
             return View();
         }
         public IActionResult Logout()
@@ -117,40 +141,55 @@ namespace NoteLibrary.Controllers
         }
         public async Task<IActionResult> Profile()
         {
-            if (HttpContext.Session.GetInt32("UserId") == null || HttpContext.Session.GetInt32("UserId") ==0)
+            if (HttpContext.Session.GetInt32("UserId") == null || HttpContext.Session.GetInt32("UserId") == 0)
             {
                 return RedirectToAction("Index", "Home");
             }
             int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
             var user = await _context.UserTable.FirstOrDefaultAsync(p => p.Id == userid);
-            if(user == null)
+            if (user == null)
             {
                 return RedirectToAction("Index", "HomeController");
             }
             return View(user);
         }
         [HttpPost]
-        public async Task<IActionResult> Profile([Bind("Name,Surname,City,University,Department,Email,Password,Id,State,ConfirmPassword")] User user)
+        public async Task<IActionResult> Profile(string Name, string Surname, string City,
+            string University, string Department, string Email, string OldPassword,
+            string NewPassword, string NewPasswordConfirm)
         {
-            if(ModelState.IsValid)
+
+            int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
+            var dbUser = await _context.UserTable.FirstOrDefaultAsync(p => p.Id == userid);
+
+            if (dbUser != null && NewPassword == NewPasswordConfirm)
             {
-                int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
-                var dbUser = await _context.UserTable.FirstOrDefaultAsync(p => p.Id == userid);
-                if(dbUser != null && user.Password ==user.ConfirmPassword)
+                try
                 {
-                    dbUser.Name = user.Name;
-                    dbUser.Surname = user.Surname;
-                    dbUser.City = user.City;
-                    dbUser.University = user.University;
-                    dbUser.Department = user.Department;
-                    dbUser.Password = user.Password;
-                    dbUser.ConfirmPassword = user.ConfirmPassword;
-                    dbUser.Email = user.Email;
-                    await _context.SaveChangesAsync();
+                    string oldhash = dbUser.Hash;
+
+                    string NewHash = Helper.PasswordHelper.ChangePassword(OldPassword, oldhash, NewPassword);
+                    if (NewHash != "")
+                    {
+                        dbUser.Hash = NewHash;
+                        dbUser.Name = Name;
+                        dbUser.Surname = Surname;
+                        dbUser.City = City;
+                        dbUser.University = University;
+                        dbUser.Department = Department;
+                        dbUser.Email = Email;
+                        await _context.SaveChangesAsync();
+                        return Json(new { ok = true, newurl = Url.Action("Index") });
+                    }
                 }
-                return RedirectToAction(nameof(Profile));
+                catch (Exception)
+                {
+                    Console.Write("Yanlışlık var");
+                    return Json(new { ok = false, message = "Hata oldu tekrar deneyiniz!" });
+                }
             }
-            return View(user);
+
+            return View();
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -171,7 +210,7 @@ namespace NoteLibrary.Controllers
             return View(file);
         }
 
-        
+
 
     }
 }
