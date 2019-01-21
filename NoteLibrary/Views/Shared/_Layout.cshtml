@@ -18,13 +18,13 @@
     <link href="~/package/dist/sweetalert2.css" rel="stylesheet" />
 </head>
 
-<body>
+<body style="background-color:#F5F5F5;">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark  fixed-top" style="background-color:#181818;">
         <div class="container">
 
             <a class="navbar-brand" href="/Home/Index">
-                <img src="~/images/nootelib_golgesiz.png" style="width:200px;" />
+                <img src="~/images/saarı.png" style="width:200px;" />
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -32,19 +32,19 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/Home">
+                        <a class="nav-link" style="color:#FFC300;" href="/Home">
                             Anasayfa
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Account/Register">Kaydol</a>
+                        <a class="nav-link" style="color:#FFC300;" href="/Account/Register">Kaydol</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Account/Login">Giriş Yap</a>
+                        <a class="nav-link" style="color:#FFC300;" href="/Account/Login">Giriş Yap</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Home/Contact">İletişim</a>
+                        <a class="nav-link" style="color:#FFC300;" href="/Home/Contact">İletişim</a>
                     </li>
 
                 </ul>
@@ -54,11 +54,13 @@
 
     </nav>
 
+    
+
     @RenderBody()
     <!-- Footer -->
-    <footer class="py-5 bg-dark">
+    <footer class="py-5" style="background-color:#181818; color:#FFC300;">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; NoteLibrary <b>2019</b></p>
+            <p class="m-0 text-center">Copyright &copy; NoteLibrary <b>2019</b></p>
         </div>
         <!-- /.container -->
     </footer>

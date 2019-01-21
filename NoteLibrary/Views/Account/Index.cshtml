@@ -4,8 +4,21 @@
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
 }
 
+<div class="jumbotron" style="background-color:aqua; height: auto;
+  background-color: #FFC300;
+  background-image: radial-gradient(#FFC300, #181818); color:#181818;">
+    <div class="container">
+        <h1 class="display-4 text-center">NooteLib</h1>
+        <p class="lead text-center">Bu uygulama sayesinde sizlere daha kolay ve pratik bir şekilde not sağlamayı hedefliyoruz.</p>
+        <hr class="my-4">
+        <p class=" text-center">Biz Kimiz ? Bizim hakkımızda daha fazla bilgi edinebilirsiniz.</p>
+        <p class=" text-center">
+            <a class="btn-lg " style="background-color:#181818; color:#FFC300" href="#" role="button">Daha Fazla</a>
+        </p>
 
-<div class="container mt-3 mb-3" >
+    </div>
+</div>
+<div class="container mt-3 mb-3">
     <form asp-controller="Account" asp-action="Index" method="get">
         <div class="row">
             <div class="input-group">
@@ -13,16 +26,11 @@
                     <input type="text" class="form-control" name="SearchString" placeholder="Aramak istediğiniz dersin adını giriniz" aria-label="Text input with segmented dropdown button">
                 </div>
                 <div class="col-md-2">
-                    <input type="submit" class="col-md-12 btn btn-primary" value="Ara" />
+                    <input type="submit" class="col-md-12 btn btn-default" style="background-color:#181818; color:#FFC300" value="Ara" />
                 </div>
             </div>
         </div>
     </form>
-</div>
-<div class="container">
-    <div class="row">
-        <img src="~/images/Dersler.jpg" style="width:100%; height:300px;" class="d-block " alt="...">
-    </div>
 </div>
 <div class="container pt-2">
     <div class="row">
@@ -35,7 +43,7 @@
                     <div class="card-body">
                         <h4 class="card-title">@Html.DisplayFor(modelItem => item.CourseName)</h4>
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
-                        <a asp-action="Details" class="btn btn-primary" asp-route-id="@item.Id">Ders Notunu İncele</a>
+                        <a asp-action="Details" class="btn btn-default" style="background-color:#FFC300; color:#181818;" asp-route-id="@item.Id">Ders Notunu İncele</a>
                     </div>
                 </div>
             </div>
