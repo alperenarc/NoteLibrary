@@ -41,11 +41,18 @@
                     window.location.href = returndata.newurl;
                 }
 
-                else {
+                else if (returndata.ok == false && returndata.message == "PasswordInvalid") {
                     Swal({
                         type: 'error',
                         title: 'Oops...',
-                        text: 'Email veya Şifre Yanlış !'
+                        text: 'Şifre yanlış ya da boş girilmiş !'
+                    })
+                }
+                else if (returndata.ok == false && returndata.message == "EmailInvalid") {
+                    Swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: "Sistemde bu E-mail'e ait bir hesap bulunamadı!"
                     })
                 }
 
