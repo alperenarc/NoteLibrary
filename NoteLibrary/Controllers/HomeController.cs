@@ -45,7 +45,12 @@ namespace NoteLibrary.Controllers
             HttpContext.Session.SetInt32("UserId", 0);
             return View();
         }
-       
+
+        public IActionResult About()
+        {
+            return View();
+        }
+
         public IActionResult ErrorPage()
         {
             return View();
