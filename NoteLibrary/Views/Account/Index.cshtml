@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NoteLibrary.Models.Entities.File>
+﻿@model NoteLibrary.ViewModels.HomepagePaginationViewModel<NoteLibrary.Models.Entities.File>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
@@ -50,3 +50,18 @@
         }
     </div>
 </div>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

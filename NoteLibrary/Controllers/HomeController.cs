@@ -14,6 +14,7 @@ using NoteLibrary.Models.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Korzh.EasyQuery.Linq;
+using NoteLibrary.ViewModels;
 
 namespace NoteLibrary.Controllers
 {
@@ -26,20 +27,27 @@ namespace NoteLibrary.Controllers
 
             _context = context;
         }
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, int? page)
         {
             HttpContext.Session.SetString("Authorize", "False");
 
-            var file = from m in _context.FileTable
-                       select m;
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+
+            IQueryable<Models.Entities.File> file = from m in _context.FileTable select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 file = file.Where(s => s.CourseName.Contains(searchString));
             }
-
-            return View(await file.ToListAsync());
+            int pageSize = 15;
+            return View(await HomepagePaginationViewModel<Models.Entities.File>.CreateAsync(
+                file.AsNoTracking(), page ?? 1, pageSize));
         }
+        
         public IActionResult Contact()
         {
             HttpContext.Session.SetInt32("UserId", 0);
