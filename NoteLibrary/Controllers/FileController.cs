@@ -97,7 +97,7 @@ namespace NoteLibrary.Controllers
             var ctrgDep = await _context.CategoryTable.FirstOrDefaultAsync(p => p.Id == depCategoryId );
             var usr = await _context.UserTable.FirstOrDefaultAsync(p => p.Id == userid);
 
-            if (vm.FilePath == null || vm.Title == null || ctrgCourseName == null || ctrgUni == null || ctrgDep == null || usr == null)
+            if (vm.FilePath == null || vm.Title == null || categoryid == 0 || uniCategoryId == 0 || depCategoryId == 0 || usr == null)
             {
                 return Json(new { ok = false});
             }

@@ -42,7 +42,7 @@
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressid" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                 </div>
-                <input class="btn btn-primary mt-2" type="file" value="upload" id="fileButton">
+                <input class="btn btn-default mt-2" type="file" style="background-color:#FFC300; color:#181818;" value="upload" id="fileButton">
             </form>
         </div>
     </div>
@@ -186,7 +186,7 @@
                             uniCategoryId: unicategoryid,
                             depCategoryId: depcategoryid
                         },
-                        success: function (data, returndata) {
+                        success: function (returndata) {
                             if (returndata.ok == true) {
                                 Swal({
                                     title: 'Teşekkürler !',
@@ -203,7 +203,10 @@
                                     type: 'error',
                                     html:
                                         '<p>Alanlar boş bırakılamaz !</p>'
-                                })
+                                }).then(function () {
+                                    window.location.href = "/File/Create";
+                                });
+                                
                             }
                             
 

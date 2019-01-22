@@ -43,12 +43,12 @@
             Ekleme Bilgisi
         </dt>
         <dd>
-            <span class="bg-danger text-white"> @Html.DisplayFor(model => model.AddedUser.Name) @Html.DisplayFor(model => model.AddedUser.Surname) </span> Tarafından
+            <span class="bg-warning text-black"> @Html.DisplayFor(model => model.AddedUser.Name) @Html.DisplayFor(model => model.AddedUser.Surname) </span> Tarafından
             @Html.DisplayFor(model => model.UploadDate) Tarihinde Eklendi.
         </dd>
     </dl>
     <div class="pb-2">
-        <a asp-action="Index" class="btn btn-danger">Geri Dön</a>
-        <a target="_blank" href="@Html.DisplayFor(model => model.FilePath)" class="btn btn-warning">İndir</a>
+        <a asp-action="Index" class="btn btn-default" style="background-color:#FFC300; color:#181818;">Geri Dön</a>
+        <a target="_blank" href="@Html.DisplayFor(model => model.FilePath)" class="btn btn-default" style="background-color:#FFC300; color:#181818;">İndir</a>
     </div>
 </div>
