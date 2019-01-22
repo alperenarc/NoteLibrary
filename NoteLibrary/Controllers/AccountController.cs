@@ -97,39 +97,52 @@ namespace NoteLibrary.Controllers
             var kontrol = await _context.UserTable
                 .FirstOrDefaultAsync(p => p.Email == Email);
 
-            try
-            {
-                string correctHash = kontrol.Hash;
-                bool Varmi = Helper.PasswordHelper.ValidatePassword(Password, correctHash);
 
-                if (Varmi == true && kontrol != null)
+             if (kontrol == null){
+                    return Json(new { ok = false, message = "EmailInvalid" });
+                 }
+
+            else {
+
+                try
                 {
+                    string correctHash = kontrol.Hash;
+                    bool Varmi = Helper.PasswordHelper.ValidatePassword(Password, correctHash);
 
-                    //state durumu nedir
-                    if (kontrol.State == false)
+                    if (Varmi == true)
                     {
-                        Console.Write("geçersiz");
-                        ModelState.AddModelError("", "Geçersiz Kullanıcı");
+
+                        //state durumu nedir
+                        if (kontrol.State == false)
+                        {
+                            Console.Write("geçersiz");
+                            ModelState.AddModelError("", "Geçersiz Kullanıcı");
+                        }
+                        else
+                        {
+
+                            // session'a user Id'sini at ve indexe gönder.
+                            HttpContext.Session.SetInt32("UserId", kontrol.Id);
+                            HttpContext.Session.SetString("Authorize", "True");
+                            Console.Write("Doğru");
+                            return Json(new { ok = true, newurl = Url.Action("Index") });
+                        }
+
                     }
                     else
                     {
-
-                        // session'a user Id'sini at ve indexe gönder.
-                        HttpContext.Session.SetInt32("UserId", kontrol.Id);
-                        HttpContext.Session.SetString("Authorize", "True");
-                        Console.Write("Doğru");
-                        return Json(new { ok = true, newurl = Url.Action("Index") });
+                        return Json(new { ok = false, message = "PasswordInvalid" });
                     }
-
                 }
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError("", "Şifre veya Kullanıcı Adı Yanlış");
-                Console.Write("Şifre veya Kullanıcı Adı Yanlış");
-                return Json(new { ok = false, message = "Şifre veya Kullanıcı Adı Yanlış" });
+                catch (Exception)
+                {
+                    return Json(new { ok = false, message = "PasswordInvalid" });
+                }
+
+
 
             }
+                
             return View();
         }
         public IActionResult Logout()
@@ -162,33 +175,49 @@ namespace NoteLibrary.Controllers
             int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
             var dbUser = await _context.UserTable.FirstOrDefaultAsync(p => p.Id == userid);
 
-            if (dbUser != null && NewPassword == NewPasswordConfirm)
+            if (dbUser != null && Name != null && Surname != null && City != null && University != null && Department != null && Email != null && OldPassword == null && NewPassword == null && NewPasswordConfirm == null)
             {
-                try
-                {
-                    string oldhash = dbUser.Hash;
+                dbUser.Name = Name;
+                dbUser.Surname = Surname;
+                dbUser.City = City;
+                dbUser.University = University;
+                dbUser.Department = Department;
+                dbUser.Email = Email;
+                await _context.SaveChangesAsync();
+                return Json(new { ok = true, newurl = Url.Action("Index") });
 
-                    string NewHash = Helper.PasswordHelper.ChangePassword(OldPassword, oldhash, NewPassword);
-                    if (NewHash != "")
+            }
+            else
+            {
+                if (dbUser != null && NewPassword == NewPasswordConfirm)
+                {
+                    try
                     {
-                        dbUser.Hash = NewHash;
-                        dbUser.Name = Name;
-                        dbUser.Surname = Surname;
-                        dbUser.City = City;
-                        dbUser.University = University;
-                        dbUser.Department = Department;
-                        dbUser.Email = Email;
-                        await _context.SaveChangesAsync();
-                        return Json(new { ok = true, newurl = Url.Action("Index") });
+                        string oldhash = dbUser.Hash;
+
+                        string NewHash = Helper.PasswordHelper.ChangePassword(OldPassword, oldhash, NewPassword);
+                        if (NewHash != "")
+                        {
+                            dbUser.Hash = NewHash;
+                            dbUser.Name = Name;
+                            dbUser.Surname = Surname;
+                            dbUser.City = City;
+                            dbUser.University = University;
+                            dbUser.Department = Department;
+                            dbUser.Email = Email;
+                            await _context.SaveChangesAsync();
+                            return Json(new { ok = true, newurl = Url.Action("Index") });
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                        Console.Write("Yanlışlık var");
+                        return Json(new { ok = false, message = "Hata oldu tekrar deneyiniz!" });
                     }
                 }
-                catch (Exception)
-                {
-                    Console.Write("Yanlışlık var");
-                    return Json(new { ok = false, message = "Hata oldu tekrar deneyiniz!" });
-                }
             }
-
+          
             return View();
         }
 
