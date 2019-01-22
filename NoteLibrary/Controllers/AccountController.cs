@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NoteLibrary.Models.Contexts;
 using NoteLibrary.Models.Entities;
+using NoteLibrary.ViewModels;
 
 namespace NoteLibrary.Controllers
 {
@@ -21,22 +23,28 @@ namespace NoteLibrary.Controllers
         }
 
         // GET: Account
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString,int? page)
         {
             if (HttpContext.Session.GetInt32("UserId") == null || HttpContext.Session.GetInt32("UserId") == 0)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            var file = from m in _context.FileTable
-                       select m;
+            
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            
+            IQueryable<Models.Entities.File> file = from m in _context.FileTable select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 file = file.Where(s => s.CourseName.Contains(searchString));
             }
-
-            return View(await file.ToListAsync());
+            int pageSize = 15;
+            return View(await HomepagePaginationViewModel<Models.Entities.File>.CreateAsync(
+                file.AsNoTracking(), page ?? 1, pageSize));
         }
 
         // GET: Account/Register
@@ -238,8 +246,7 @@ namespace NoteLibrary.Controllers
 
             return View(file);
         }
-
-
+      
 
     }
 }
