@@ -18,6 +18,11 @@ namespace NoteLibrary.Models.Entities
         public string FilePath { get; set; }
         [Required]
         public DateTime UploadDate { get; set; }
+
+        public string University { get; set; }
+
+        public string Department { get; set; }
+        
         //Navigation
         public User AddedUser { get; set; }
         public Category Category { get; set; }

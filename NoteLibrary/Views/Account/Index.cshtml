@@ -43,6 +43,8 @@
                     <div class="card-body">
                         <h4 class="card-title">@Html.DisplayFor(modelItem => item.CourseName)</h4>
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.University)</h5>
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Department)</h5>
                         <a asp-action="Details" class="btn btn-default" style="background-color:#FFC300; color:#181818;" asp-route-id="@item.Id">Ders Notunu İncele</a>
                     </div>
                 </div>
@@ -55,13 +57,18 @@
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
-<a asp-action="Index"
-   asp-route-page="@(Model.PageIndex - 1)"
-   class="btn btn-default @prevDisabled">
-    Previous
-</a>
-<a asp-action="Index"
-   asp-route-page="@(Model.PageIndex + 1)"
-   class="btn btn-default @nextDisabled">
-    Next
-</a>
+<div class="container">
+    <p class="text-center">
+        <a asp-action="Index"
+           asp-route-page="@(Model.PageIndex - 1)"
+           class="btn btn-default @prevDisabled" style="background-color:#FFC300; color:#181818;">
+            Önceki
+        </a>
+        <a asp-action="Index"
+           asp-route-page="@(Model.PageIndex + 1)"
+           class="btn btn-default @nextDisabled" style="background-color:#FFC300; color:#181818;">
+            Sonraki
+        </a>
+    </p>
+
+</div>

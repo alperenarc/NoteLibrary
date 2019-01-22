@@ -88,25 +88,36 @@ namespace NoteLibrary.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> Create(FileCreateViewModel vm,string categoryLessonId)
+        public async Task<IActionResult> Create(FileCreateViewModel vm,string categoryLessonId,int uniCategoryId,int depCategoryId)
         {
-            var categoryid = Convert.ToInt32(categoryLessonId); 
-            var ctrg = await _context.CategoryTable.FirstOrDefaultAsync(p => p.Id == categoryid );
             int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
+            var categoryid = Convert.ToInt32(categoryLessonId); 
+            var ctrgCourseName = await _context.CategoryTable.FirstOrDefaultAsync(p => p.Id == categoryid );
+            var ctrgUni = await _context.CategoryTable.FirstOrDefaultAsync(p => p.Id == uniCategoryId );
+            var ctrgDep = await _context.CategoryTable.FirstOrDefaultAsync(p => p.Id == depCategoryId );
             var usr = await _context.UserTable.FirstOrDefaultAsync(p => p.Id == userid);
-            File file = new File();
-            file.CourseName = ctrg.Name;
-            file.Title = vm.Title;
-            file.Description = vm.Description;
-            file.FilePath = vm.FilePath;
-            file.AddedUser = usr;
-            file.UploadDate = DateTime.Now;
-            file.Category = ctrg;
-            //file.Category =vm.Lesson;
-            _context.Add(file);
-            await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            if (vm.FilePath == null || vm.Title == null || ctrgCourseName == null || ctrgUni == null || ctrgDep == null || usr == null)
+            {
+                return Json(new { ok = false});
+            }
+            else {
+                File file = new File();
+                file.CourseName = ctrgCourseName.Name;
+                file.Title = vm.Title;
+                file.Description = vm.Description;
+                file.FilePath = vm.FilePath;
+                file.AddedUser = usr;
+                file.UploadDate = DateTime.Now;
+                file.Category = ctrgCourseName;
+                file.University = ctrgUni.Name;
+                file.Department = ctrgDep.Name;
+                _context.Add(file);
+                await _context.SaveChangesAsync();
+                return Json(new { ok = true });
+            }
+
+            
         }
 
         // GET: File/Edit/5

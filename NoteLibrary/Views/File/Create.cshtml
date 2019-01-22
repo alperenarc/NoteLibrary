@@ -172,26 +172,40 @@
                     var title = document.getElementById('title').value;
                     var descrpt = document.getElementById('description').value;
                     var categorylesson = document.getElementById('lesCategoryId').value;
-
+                    var unicategoryid = document.getElementById('uniCategoryId').value;
+                    var depcategoryid = document.getElementById('depCategoryId').value;
+                    console.log(unicategoryid);
                     $.ajax({
                         type: "POST",
                         url: "/File/Create",
                         data: {
                             filePath: downloadURL,
-                            //courseName: courseName,
                             categoryLessonId: categorylesson,
                             title: title,
-                            description: descrpt
+                            description: descrpt,
+                            uniCategoryId: unicategoryid,
+                            depCategoryId: depcategoryid
                         },
-                        success: function (data) {
-                            Swal({
-                                title: 'Teşekkürler !',
-                                type: 'success',
-                                html:
-                                    '<p>Dosya Yüklemesi Başarıyla Gerçekleşti!</p>'
-                            }).then(function () {
-                                window.location.href = "/Account/Index";
-                            });
+                        success: function (data, returndata) {
+                            if (returndata.ok == true) {
+                                Swal({
+                                    title: 'Teşekkürler !',
+                                    type: 'success',
+                                    html:
+                                        '<p>Dosya Yüklemesi Başarıyla Gerçekleşti!</p>'
+                                }).then(function () {
+                                    window.location.href = "/Account/Index";
+                                });
+                            }
+                            else {
+                                Swal({
+                                    title: 'Hata !',
+                                    type: 'error',
+                                    html:
+                                        '<p>Alanlar boş bırakılamaz !</p>'
+                                })
+                            }
+                            
 
                         },
 
