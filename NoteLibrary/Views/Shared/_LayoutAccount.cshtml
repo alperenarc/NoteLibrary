@@ -20,6 +20,7 @@
     <link href="~/vendor/bootstrap/css/bootstrap.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
     <link href="~/css/blog-home.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 
 <body style="background-color:#F5F5F5;">
@@ -61,16 +62,43 @@
 
     @RenderBody()
     <!-- Footer -->
-    <footer class="py-5" style="background-color:#181818; color:#F5F5F5;">
+    <footer class="py-5" style="background-color:#181818; color:#f5f5f5;">
         <div class="container">
+            <div class="col-md-12 text-center">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>Hakkımızda</h5>
+                        <p>Erciyes Üniversitesi Bilgisayar Mühendisliği öğrencileri tarafından yapılmıştır.</p>
+                        &copy; Kayten Academy
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Platformlar</h5>
+                        <p>Yakın zamanda sizlerle olmasını planlıyoruz.</p>
+                        <a href="#" class="text-white"><i class="fab fa-android"> Android</i></a>
+
+                        <a href="#" class="text-white"><i class="fab fa-apple"> IOS</i></a>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Geliştiriciler Hakkında</h5>
+                        <div class="text-center">
+                            <a href="https://www.linkedin.com/in/ensar-eray-akkaya-25a032155/" class="text-white"><i class="fab fa-linkedin"> Ensar Eray Akkaya</i></a>
+                            <br />
+                            <a href="https://www.linkedin.com/in/alperen-arici-4a4a74154/" class="text-white"><i class="fab fa-linkedin"> Alperen Arıcı</i></a>
+                            <br />
+                            <a href=" https://www.linkedin.com/in/alperen-%C3%BCnal-706a73154/" class="text-white"><i class="fab fa-linkedin"> Alperen Ünal</i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
             <p class="m-0 text-center">Copyright &copy; NoteLibrary <b>2019</b></p>
         </div>
-        <!-- /.container -->
     </footer>
 
     <!-- Bootstrap core JavaScript -->
     @*<script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
     <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
