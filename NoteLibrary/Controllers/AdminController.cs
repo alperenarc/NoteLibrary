@@ -157,7 +157,7 @@ namespace NoteLibrary.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("List", "Admin");
             }
             return View(category);
         }
@@ -196,7 +196,7 @@ namespace NoteLibrary.Controllers
             var category = await _context.CategoryTable.FindAsync(id);
             _context.CategoryTable.Remove(category);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("List","Admin");
         }
 
         private bool CategoryExists(int id)
