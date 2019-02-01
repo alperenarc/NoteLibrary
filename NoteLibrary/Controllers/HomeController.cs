@@ -37,7 +37,7 @@ namespace NoteLibrary.Controllers
                 page = 1;
             }
 
-            IQueryable<Models.Entities.File> file = from m in _context.FileTable select m;
+            IQueryable<Models.Entities.File> file = from m in _context.FileTable.Where(p=>p.State == true) select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {

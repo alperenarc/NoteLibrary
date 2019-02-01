@@ -128,8 +128,7 @@ namespace NoteLibrary.Controllers
                         //state durumu nedir
                         if (kontrol.State == false)
                         {
-                            Console.Write("geçersiz");
-                            ModelState.AddModelError("", "Geçersiz Kullanıcı");
+                            return Json(new { ok = false, message = "EmailInvalid" });
                         }
                         else
                         {
