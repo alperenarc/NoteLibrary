@@ -203,5 +203,83 @@ namespace NoteLibrary.Controllers
         {
             return _context.CategoryTable.Any(e => e.Id == id);
         }
+
+        //File İşlemleri
+        //File Listeleme
+        //File Silme
+
+        public async Task<IActionResult> FileList()
+        {
+            if (HttpContext.Session.GetString("AdminSecurity") == "True")
+            {
+                return View(await _context.FileTable.ToListAsync());
+            }
+            else
+            {
+                return View("Index");
+            }
+        }
+
+        public async Task<IActionResult> FileEdit(int? id)
+        {
+            if (HttpContext.Session.GetString("AdminSecurity") == "True")
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var file = await _context.FileTable.FindAsync(id);
+                if (file == null)
+                {
+                    return NotFound();
+                }
+                return View(file);
+            }
+            else
+            {
+                return View("Index");
+            }
+
+        }
+
+        // POST: Admin/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FileEdit(int id, [Bind("CourseName,Title,Description,FilePath,University,Department,UploadDate,Id,State")] File file)
+        {
+            if (id != file.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(file);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!FileExists(file.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("FileList", "Admin");
+            }
+            return View(file);
+        }
+
+        private bool FileExists(int id)
+        {
+            return _context.FileTable.Any(e => e.Id == id);
+        }
+
     }
 }
