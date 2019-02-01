@@ -2,9 +2,10 @@
 
 @{
     ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 <div class="container">
-    <h2>List</h2>
+    <h2>Category List</h2>
 
     <p>
         <a asp-action="Create">Create New</a>
@@ -44,9 +45,7 @@
                     @Html.DisplayFor(modelItem => item.State)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
                 </td>
             </tr>
             }

@@ -1,42 +1,32 @@
-﻿@model NoteLibrary.Models.Entities.File
+﻿@model NoteLibrary.Models.Entities.User
 
 @{
-    ViewData["Title"] = "FileEdit";
+    ViewData["Title"] = "UserEdit";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 <div class="container">
-    <h2>FileEdit</h2>
+    <h2>UserEdit</h2>
 
-    <h4>File</h4>
+    <h4>User</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="FileEdit">
+            <form asp-action="UserEdit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="CourseName" class="control-label"></label>
-                    <input asp-for="CourseName" class="form-control" />
-                    <span asp-validation-for="CourseName" class="text-danger"></span>
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Title" class="control-label"></label>
-                    <input asp-for="Title" class="form-control" />
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <label asp-for="Surname" class="control-label"></label>
+                    <input asp-for="Surname" class="form-control" />
+                    <span asp-validation-for="Surname" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Description" class="control-label"></label>
-                    <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="FilePath" class="control-label"></label>
-                    <input asp-for="FilePath" class="form-control" />
-                    <span asp-validation-for="FilePath" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="UploadDate" class="control-label"></label>
-                    <input asp-for="UploadDate" class="form-control" />
-                    <span asp-validation-for="UploadDate" class="text-danger"></span>
+                    <label asp-for="City" class="control-label"></label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="University" class="control-label"></label>
@@ -47,6 +37,16 @@
                     <label asp-for="Department" class="control-label"></label>
                     <input asp-for="Department" class="form-control" />
                     <span asp-validation-for="Department" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Hash" class="control-label"></label>
+                    <input asp-for="Hash" class="form-control" />
+                    <span asp-validation-for="Hash" class="text-danger"></span>
                 </div>
                 <input type="hidden" asp-for="Id" />
                 <div class="form-group">
@@ -67,7 +67,4 @@
         <a asp-action="HomePage">Back to List</a>
     </div>
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
 </div>

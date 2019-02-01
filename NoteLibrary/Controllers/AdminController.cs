@@ -43,40 +43,16 @@ namespace NoteLibrary.Controllers
             if (username == "notelibadmin" && password == "eru123notelib")
             {
                 HttpContext.Session.SetString("AdminSecurity", "True");
-                return RedirectToAction("List", "Admin");
+                return RedirectToAction("HomePage", "Admin");
             }
             else
             {
                 ModelState.AddModelError("", "Geçersiz Kullanıcı");
                 return View();
             }
-            
-        }
-        // GET: Admin/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (HttpContext.Session.GetString("AdminSecurity")=="True")
-            {
-                if (id == null)
-                {
-                    return NotFound();
-                }
 
-                var category = await _context.CategoryTable
-                    .FirstOrDefaultAsync(m => m.Id == id);
-                if (category == null)
-                {
-                    return NotFound();
-                }
-
-                return View(category);
-            }
-            else
-            {
-                return View("Index");
-            }
-            
         }
+
 
         // GET: Admin/Create
         public IActionResult Create()
@@ -126,7 +102,7 @@ namespace NoteLibrary.Controllers
             {
                 return View("Index");
             }
-            
+
         }
 
         // POST: Admin/Edit/5
@@ -161,44 +137,6 @@ namespace NoteLibrary.Controllers
             }
             return View(category);
         }
-
-        // GET: Admin/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (HttpContext.Session.GetString("AdminSecurity") == "True")
-            {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var category = await _context.CategoryTable
-                    .FirstOrDefaultAsync(m => m.Id == id);
-                if (category == null)
-                {
-                    return NotFound();
-                }
-
-                return View(category);
-            }
-            else
-            {
-                return View("Index");
-            } 
-            
-        }
-
-        // POST: Admin/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var category = await _context.CategoryTable.FindAsync(id);
-            _context.CategoryTable.Remove(category);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("List","Admin");
-        }
-
         private bool CategoryExists(int id)
         {
             return _context.CategoryTable.Any(e => e.Id == id);
@@ -281,5 +219,95 @@ namespace NoteLibrary.Controllers
             return _context.FileTable.Any(e => e.Id == id);
         }
 
+        //User İşlemleri
+        //User Listeleme
+        //User Silme
+
+        public async Task<IActionResult> UserList()
+        {
+            if (HttpContext.Session.GetString("AdminSecurity") == "True")
+            {
+                return View(await _context.UserTable.ToListAsync());
+            }
+            else
+            {
+                return View("Index");
+            }
+        }
+
+        public async Task<IActionResult> UserEdit(int? id)
+        {
+            if (HttpContext.Session.GetString("AdminSecurity") == "True")
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var user = await _context.UserTable.FindAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return View(user);
+            }
+            else
+            {
+                return View("Index");
+            }
+
+        }
+
+        // POST: Admin/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UserEdit(int id, [Bind("Name,Surname,University,Department,City,Email,Hash,Id,State")] User user)
+        {
+            if (id != user.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserExists(user.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("UserList", "Admin");
+            }
+            return View(user);
+        }
+
+        private bool UserExists(int id)
+        {
+            return _context.UserTable.Any(e => e.Id == id);
+        }
+
+
+        public IActionResult HomePage()
+        {
+            if (HttpContext.Session.GetString("AdminSecurity") == "True")
+            {
+                return View();
+            }
+            else
+            {
+                return View("Index");
+            }
+
+        }
     }
 }
