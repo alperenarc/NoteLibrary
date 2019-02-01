@@ -6,7 +6,7 @@
 }
 
 
-<div class="container">
+<div class="container mt-2">
     <h2>Ders Notu Oluştur</h2>
     <h4>Dosya</h4>
     <hr />
@@ -14,9 +14,17 @@
         <div class="col-md-4">
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <p class="text-danger">Lütfen yükleyeceğini dosyayı seçmeden önce bütün alanları doldurduğunuza emin olunuz !</p>
                 <div class="form-group">
                     <label class="control-label">Başlık</label>
-                    <input type="text" class="form-control" placeholder="Örn: Vize Notu" id="title" name="title" value="" />
+                    <select class="form-control" name="title" id="title">
+                        <option value="" disabled selected>Başlık Seçiniz</option>
+                        <option value="Vize">Vize</option>
+                        <option value="Final">Final</option>
+                        <option value="Ödev">Ödev</option>
+                        <option value="Büt">Büt</option>
+                        <option value="Çıkmış Soru">Çıkmış Soru</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Açıklama</label>
@@ -42,6 +50,7 @@
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressid" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                 </div>
+                <p class="text-danger">Eğer birden fazla dosya yüklemek istiyorsanız lütfen zip ya da rarlayınız !!!</p>
                 <input class="btn btn-default mt-2" type="file" style="background-color:#FFC300; color:#181818;" value="upload" id="fileButton">
             </form>
         </div>

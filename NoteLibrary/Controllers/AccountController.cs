@@ -52,6 +52,11 @@ namespace NoteLibrary.Controllers
         {
             return View();
         }
+        // GET: Account/Register
+        public IActionResult About()
+        {
+            return View();
+        }
 
         // POST: Account/Register
         [HttpPost]
