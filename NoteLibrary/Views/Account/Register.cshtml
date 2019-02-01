@@ -146,44 +146,61 @@
             var university = document.getElementById('University').value;
             var department = document.getElementById('Department').value;
             var email = document.getElementById('Email').value;
-            $.ajax({
-                type: "POST",
-                url: "/Account/Register",
-                data: {
-                    Password: password,
-                    ConfirmPassword: confirmpassword,
-                    Name: name,
-                    Surname: surname,
-                    City: city,
-                    Department: department,
-                    Email: email,
-                    University: university
-                },
-                success: function (returndata) {
-                    if (returndata.ok) {
 
-                        Swal({
-                            title: 'Teşekkürler !',
-                            type: 'success',
-                            html:
-                                '<p>Kayıt işlemi başarı ile gerçekleşti!</p>'
-                        }).then(function () {
-                            window.location.href = returndata.newurl;
-                        });
+            function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@@\"]+(\.[^<>()[\]\\.,;:\s@@\"]+)*)|(\".+\"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+            }
+
+            if (validateEmail(email) && password.length > 5) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Account/Register",
+                    data: {
+                        Password: password,
+                        ConfirmPassword: confirmpassword,
+                        Name: name,
+                        Surname: surname,
+                        City: city,
+                        Department: department,
+                        Email: email,
+                        University: university
+                    },
+                    success: function (returndata) {
+                        if (returndata.ok) {
+
+                            Swal({
+                                title: 'Teşekkürler !',
+                                type: 'success',
+                                html:
+                                    '<p>Kayıt işlemi başarı ile gerçekleşti!</p>'
+                            }).then(function () {
+                                window.location.href = returndata.newurl;
+                            });
+                        }
+
+                        else {
+                            Swal({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: 'Alanlar boş geçilemez veya girilen şifre tekrar girilen şifre ile aynı olmalı!'
+                            })
+                        }
+
+
                     }
-
-                    else {
-                        Swal({
-                            type: 'error',
-                            title: 'Oops...',
-                            text: 'Alanlar boş geçilemez veya girilen şifre tekrar girilen şifre ile aynı olmalı!'
-                        })
-                    }
-
-
-                }
-            });
-
+                });
+                
+            } else {
+                Swal({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: 'E-mail doğru formatta giriniz ve şifre 6 haneli olmalı!'
+                })
+                
+            }
+       
         });
 
     </script>
