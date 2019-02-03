@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using NoteLibrary.Models.Contexts;
 using NoteLibrary.Models.Entities;
 using NoteLibrary.ViewModels;
@@ -250,7 +251,43 @@ namespace NoteLibrary.Controllers
 
             return View(file);
         }
-      
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        public IActionResult SendMail(string email, string messagecontent, string subject, string name)
+        {
+            if (email == null || messagecontent == null || subject == null || name == null)
+            {
+                ModelState.AddModelError("Hata", "Eksik Bilgi");
+                return RedirectToAction("ErrorPage","Home");
+            }
+            else
+            {
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("mailto@dovizsondurum.com"));
+                message.To.Add(new MailboxAddress("mailto@dovizsondurum.com"));
+                message.Subject = subject;
+                message.Body = new TextPart("html")
+                {
+                    Text = "BAŞLIK:" + subject + "<br>" +
+                    name + " 'dan <br> " +
+                    email + " 'dan <br> " +
+                    " Mesaj : " + messagecontent
+                };
+
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    //587
+                    client.Connect("srvm04.turhost.com", 587, false);
+                    client.Authenticate("mailto@dovizsondurum.com", "Qwerty123");
+                    client.Send(message);
+                    client.Disconnect(true);
+                };
+                return RedirectToAction("Index", "Account");
+            }
+        }
 
     }
 }

@@ -11,51 +11,90 @@
     <h4>Dosya</h4>
     <hr />
     <div class="row mb-3">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <p class="text-danger">Lütfen yükleyeceğini dosyayı seçmeden önce bütün alanları doldurduğunuza emin olunuz !</p>
-                <div class="form-group">
-                    <label class="control-label">Başlık</label>
-                    <select class="form-control" name="title" id="title">
-                        <option value="" disabled selected>Başlık Seçiniz</option>
-                        <option value="Vize">Vize</option>
-                        <option value="Final">Final</option>
-                        <option value="Ödev">Ödev</option>
-                        <option value="Büt">Büt</option>
-                        <option value="Çıkmış Soru">Çıkmış Soru</option>
-                    </select>
+                <div class="col-md-12"><p class="text-danger">Lütfen yükleyeceğini dosyayı seçmeden önce bütün alanları doldurduğunuza emin olunuz !</p></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Başlık</label>
+                            <select class="form-control" name="title" id="title">
+                                <option value="" disabled selected>Başlık Seçiniz</option>
+                                <option value="Vize">Vize</option>
+                                <option value="Final">Final</option>
+                                <option value="Ödev">Ödev</option>
+                                <option value="Büt">Büt</option>
+                                <option value="Çıkmış Soru">Çıkmış Soru</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Açıklama</label>
+                            <input type="text" class="form-control" placeholder="Örn: Ahmet Hocanın Notu" id="description" name="description" value="" />
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">Açıklama</label>
-                    <input type="text" class="form-control" placeholder="Örn: Ahmet Hocanın Notu" id="description" name="description" value="" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Şehir</label>
+                            <select asp-for="City" id="cityCategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.ListofCities,"Id","Name"))"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Üniversite</label>
+                            <select asp-for="University" id="uniCategoryId" class="form-control" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Bölüm</label>
+                            <select asp-for="Department" id="depCategoryId" class="form-control" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Ders</label>
+                            <select asp-for="Lesson" id="lesCategoryId" class="form-control" onchange="onChange(this)" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="text-danger">Eğer birden fazla dosya yüklemek istiyorsanız lütfen zip ya da rarlayınız !!!</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <input class="btn btn-default mt-2 col-md-12 text-center" type="file" style="background-color:#FFC300; color:#181818;" value="upload" id="fileButton">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressid" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label">Şehir</label>
-                    <select asp-for="City" id="cityCategoryId" class="form-control" asp-items="@(new SelectList(ViewBag.ListofCities,"Id","Name"))"></select>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Üniversite</label>
-                    <select asp-for="University" id="uniCategoryId" class="form-control" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Bölüm</label>
-                    <select asp-for="Department" id="depCategoryId" class="form-control" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Ders</label>
-                    <select asp-for="Lesson" id="lesCategoryId" class="form-control" onchange="onChange(this)" asp-items="@(new SelectList(string.Empty,"Id","Name"))"></select>
-                </div>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressid" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-                </div>
-                <p class="text-danger">Eğer birden fazla dosya yüklemek istiyorsanız lütfen zip ya da rarlayınız !!!</p>
-                <input class="btn btn-default mt-2" type="file" style="background-color:#FFC300; color:#181818;" value="upload" id="fileButton">
+
+
+
+
+
+
+
+
+
+
+
+
+
             </form>
         </div>
     </div>
- 
+
     <script src="~/lib/jquery/dist/jquery.js"></script>
 
     <script src="~/package/dist/sweetalert2.js"></script>
@@ -215,9 +254,9 @@
                                 }).then(function () {
                                     window.location.href = "/File/Create";
                                 });
-                                
+
                             }
-                            
+
 
                         },
 

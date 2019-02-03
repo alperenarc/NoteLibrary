@@ -44,21 +44,23 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" style="color:#fff;" href="/Home">
+                        <a class="nav-link" style="color:#fff;" href="/Account">
                             Anasayfa
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="color:#fff;" href="/Account/Register">Kaydol</a>
+                        <a class="nav-link" style="color:#fff;" href="/Account/Profile">Profil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="color:#fff;" href="/Account/Login">Giriş Yap</a>
+                        <a class="nav-link" style="color:#fff;" href="/File/Create">Ders Notu Ekle</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="color:#fff;" href="/Home/Contact">İletişim</a>
+                        <a class="nav-link" style="color:#fff;" href="/Account/Contact">İletişim</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" style="color:#fff;" href="/Account/Logout">Çıkış Yap</a>
+                    </li>
                 </ul>
 
             </div>
@@ -67,62 +69,62 @@
     </nav>
     <div class="container mt-5">
 
-        @using (Html.BeginForm("SendMail", "Home"))
+        @using (Html.BeginForm("SendMail", "Account"))
         {
-        <div class="row  text-white">
-            <div class="col-md-6">
-                <div class="col-md-12 col-md-offset-2">
-                    <p>
-                        <ul>
-                            <li>Lütfen size geri bildirim yapabilmemiz için Email adresinizi doğru giriniz !</li>
-                        </ul>
-                    </p>
+            <div class="row  text-white">
+                <div class="col-md-6">
+                    <div class="col-md-12 col-md-offset-2">
+                        <p>
+                            <ul>
+                                <li>Lütfen size geri bildirim yapabilmemiz için Email adresinizi doğru giriniz !</li>
+                            </ul>
+                        </p>
 
-                </div>
-                <div class="col-md-12 col-md-offset-2">
-                    <label>İsim</label>
-                    <div class="form-group">
-                        <input type="text" name="name" class="form-group form-control" />
+                    </div>
+                    <div class="col-md-12 col-md-offset-2">
+                        <label>İsim</label>
+                        <div class="form-group">
+                            <input type="text" name="name" class="form-group form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-md-offset-2">
+                        <label>E-Mail</label>
+                        <div class="form-group">
+                            <input type="email" name="email" class="form-group form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-md-offset-2">
+                        <label>Başlık</label>
+                        <div class="form-group">
+                            <select name="subject" class="form-group form-control">
+                                <option value="" disabled selected>Başlık Seçiniz</option>
+                                <option value="İstek">İstek</option>
+                                <option value="Öneri">Öneri</option>
+                                <option value="Şikayet">Şikayet</option>
+                                <option value="Diğer">Diğer</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-12 col-md-offset-2">
-                    <label>E-Mail</label>
-                    <div class="form-group">
-                        <input type="email" name="email" class="form-group form-control" />
+
+
+                <div class="col-md-6">
+                    <div class="col-md-12 col-md-offset-2">
+                        <label>Mesaj</label>
+                        <div class="form-group">
+                            <textarea name="messagecontent" style="height:240px;" type="text" class="form-group form-control"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 col-md-offset-2">
+                        <div class="form-group">
+                            <button class="btn btn-default col-md-12" style="background-color:#181818; color:#f5f5f5;" type="submit">Mesaj Gönder</button>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-12 col-md-offset-2">
-                    <label>Başlık</label>
-                    <div class="form-group">
-                        <select name="subject" class="form-group form-control">
-                            <option value="" disabled selected>Başlık Seçiniz</option>
-                            <option value="İstek">İstek</option>
-                            <option value="Öneri">Öneri</option>
-                            <option value="Şikayet">Şikayet</option>
-                            <option value="Diğer">Diğer</option>
-                        </select>
-                    </div>
-                </div>
+
             </div>
-
-
-            <div class="col-md-6">
-                <div class="col-md-12 col-md-offset-2">
-                    <label>Mesaj</label>
-                    <div class="form-group">
-                        <textarea name="messagecontent" style="height:240px;" type="text" class="form-group form-control"></textarea>
-                    </div>
-                </div>
-
-
-                <div class="col-md-12 col-md-offset-2">
-                    <div class="form-group">
-                        <button class="btn btn-default col-md-12" style="background-color:#181818; color:#f5f5f5;" type="submit">Mesaj Gönder</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
         }
 
     </div>
