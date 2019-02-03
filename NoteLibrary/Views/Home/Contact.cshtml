@@ -3,7 +3,7 @@
     ViewData["Title"] = "Contact";
 }
 <div class="container">
-    <h2>SendMail</h2>
+    <h2>Mesaj Gönder</h2>
 
     @using (Html.BeginForm("SendMail", "Home"))
     {
@@ -11,25 +11,25 @@
             <div class="col-md-6 col-md-offset-2">
                 <label>İsim</label>
                 <div class="form-group">
-                    <input type="text" name="name" class="form-group" />
+                    <input type="text" name="name" class="form-group form-control" />
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-2">
                 <label>E-Mail</label>
                 <div class="form-group">
-                    <input type="email" name="email" class="form-group" />
+                    <input type="email" name="email" class="form-group form-control" />
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-2">
                 <label>Başlık</label>
                 <div class="form-group">
-                    <input type="text" name="subject" class="form-group" />
+                    <input type="text" name="subject" class="form-group form-control" />
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-2">
                 <label>Mesaj</label>
                 <div class="form-group">
-                    <textarea name="messagecontent" type="text" class="form-group"></textarea>
+                    <textarea name="messagecontent" type="text" class="form-group form-control"></textarea>
                 </div>
             </div>
             <div class="col-md-6 col-md-offset-2">

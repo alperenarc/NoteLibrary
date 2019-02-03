@@ -73,25 +73,26 @@ namespace NoteLibrary.Controllers
             else
             {
                 var message = new MimeMessage();
-                message.From.Add(new MailboxAddress("alparicieren@gmail.com"));
-                message.To.Add(new MailboxAddress("eren.arc.eren@gmail.com"));
+                message.From.Add(new MailboxAddress("mailto@dovizsondurum.com"));
+                message.To.Add(new MailboxAddress("mailto@dovizsondurum.com"));
                 message.Subject = subject;
                 message.Body = new TextPart("html")
                 {
-                    Text = name + " 'den <br> " +
-                    email + " Mailinden <br> " +
-                    " Mesaj : " + message
+                    Text = "BAŞLIK:" + subject + "<br>"+
+                    name + " 'dan <br> " +
+                    email + " 'dan <br> " +
+                    " Mesaj : " + messagecontent
                 };
 
                 using (var client = new MailKit.Net.Smtp.SmtpClient())
                 {
                     //587
-                    client.Connect("smtp.gmail.com", 587, false);
-                    client.Authenticate("eren.arc.eren@gmail.com", "*****");
+                    client.Connect("srvm04.turhost.com", 587, false);
+                    client.Authenticate("mailto@dovizsondurum.com", "Qwerty123");
                     client.Send(message);
                     client.Disconnect(true);
                 };
-                return View("Index");
+                return RedirectToAction("Index","Home");
             }
         }
         // GET: File/Details/5
