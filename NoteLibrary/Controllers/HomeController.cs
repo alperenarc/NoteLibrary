@@ -73,8 +73,8 @@ namespace NoteLibrary.Controllers
             else
             {
                 var message = new MimeMessage();
-                message.From.Add(new MailboxAddress("mailto@dovizsondurum.com"));
-                message.To.Add(new MailboxAddress("mailto@dovizsondurum.com"));
+                message.From.Add(new MailboxAddress("info@nootelib.com"));
+                message.To.Add(new MailboxAddress("info@nootelib.com"));
                 message.Subject = subject;
                 message.Body = new TextPart("html")
                 {
@@ -88,7 +88,7 @@ namespace NoteLibrary.Controllers
                 {
                     //587
                     client.Connect("srvm04.turhost.com", 587, false);
-                    client.Authenticate("mailto@dovizsondurum.com", "Qwerty123");
+                    client.Authenticate("info@nootelib.com", "Qwerty123");
                     client.Send(message);
                     client.Disconnect(true);
                 };

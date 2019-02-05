@@ -42,7 +42,8 @@ namespace NoteLibrary
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            var connection = @"Server=mssql08.turhost.com; Initial Catalog=Notelib; User ID=alperen;Password=Alparc817ismail.";
+            var connection = @"Server=mssql11.turhost.com; Initial Catalog=NoteLibrary; User ID=Alperen;Password=AlpEray2017*";
+            //var connection = @"Server=(localdb)\mssqllocaldb;Database=NoteLibrary;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<NoteContext>(options => options.UseSqlServer(connection));
         }
 
@@ -64,7 +65,7 @@ namespace NoteLibrary
             app.UseCookiePolicy();
 
             app.UseSession();
-           
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
