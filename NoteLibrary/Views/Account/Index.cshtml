@@ -79,15 +79,20 @@
             <!-- Blog Entries Column -->
             <div class="col-md-4">
                 <!-- Blog Post -->
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h4 class="card-title">@Html.DisplayFor(modelItem => item.CourseName)</h4>
-                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
-                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.University)</h5>
-                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Department)</h5>
-                        <a asp-action="Details" class="btn btn-default" style="background-color:#FFC300; color:#181818;" asp-route-id="@item.Id">Ders Notunu İncele</a>
+                 <div class="card mb-1">
+                        <div class="card-body">
+                            <h5 class="card-title text-center text-black">@Html.DisplayFor(modelItem => item.CourseName)</h5>
+                            <h6 class="card-title text-center text-black">@Html.DisplayFor(modelItem => item.Title)</h6>
+                            <div class="col-md-12">
+
+                                <p class="card-title text-center text-warning" style="background-color:#181818; font-size:18px; border-radius:20px;">@Html.DisplayFor(modelItem => item.University)</p>
+                                <p class="card-title text-center text-warning" style="background-color:#181818; font-size:18px; border-radius:20px;">@Html.DisplayFor(modelItem => item.Department)</p>
+
+                            </div>
+                            <p class="text-center"><a asp-action="Details" class="btn btn-default" style="background-color:#FFC300; color:#181818; margin-top:10px;" asp-route-id="@item.Id">Ders Notunu İncele</a></p>
+                        </div>
+                        <p class="card-title text-center text-black" style="background-color:white;font-size:14px; margin-top:-35px;">Ekleyen:<span style="color:#FFC300;">@Html.DisplayFor(modelItem => item.AddedUser.Name)</span></p>
                     </div>
-                </div>
             </div>
         }
     </div>

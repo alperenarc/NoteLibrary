@@ -37,7 +37,9 @@ namespace NoteLibrary.Controllers
                 page = 1;
             }
             
-            IQueryable<Models.Entities.File> file = from m in _context.FileTable.Where(p=>p.State == true) select m;
+            IQueryable<Models.Entities.File> file = from m in _context.FileTable.
+                                                    Where(p => p.State == true).Include(u => u.AddedUser)
+                                                    select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
