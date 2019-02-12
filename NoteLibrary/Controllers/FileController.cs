@@ -33,7 +33,7 @@ namespace NoteLibrary.Controllers
                 {
                     file = file.Where(s => s.CourseName.Contains(searchString));
                 }
-
+                
                 return View(await file.ToListAsync());
             }
             else

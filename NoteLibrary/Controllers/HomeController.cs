@@ -38,18 +38,20 @@ namespace NoteLibrary.Controllers
             }
 
             IQueryable<Models.Entities.File> file = from m in _context.FileTable.
-                                                    Where(p=>p.State == true).Include(u => u.AddedUser)
+                                                    Where(p => p.State == true).Include(u => u.AddedUser)
                                                     select m;
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 file = file.Where(s => s.CourseName.Contains(searchString));
             }
+
+
+
             int pageSize = 15;
             return View(await HomepagePaginationViewModel<Models.Entities.File>.CreateAsync(
                 file.AsNoTracking(), page ?? 1, pageSize));
         }
-        
         public IActionResult Contact()
         {
             HttpContext.Session.SetInt32("UserId", 0);
@@ -65,9 +67,9 @@ namespace NoteLibrary.Controllers
         {
             return View();
         }
-        public IActionResult SendMail(string email, string messagecontent, string subject, string name )
+        public IActionResult SendMail(string email, string messagecontent, string subject, string name)
         {
-            if (email == null || messagecontent==null|| subject==null|| name==null)
+            if (email == null || messagecontent == null || subject == null || name == null)
             {
                 ModelState.AddModelError("Hata", "Eksik Bilgi");
                 return View("ErrorPage");
@@ -80,7 +82,7 @@ namespace NoteLibrary.Controllers
                 message.Subject = subject;
                 message.Body = new TextPart("html")
                 {
-                    Text = "BAŞLIK:" + subject + "<br>"+
+                    Text = "BAŞLIK:" + subject + "<br>" +
                     name + " 'dan <br> " +
                     email + " 'dan <br> " +
                     " Mesaj : " + messagecontent
@@ -94,7 +96,7 @@ namespace NoteLibrary.Controllers
                     client.Send(message);
                     client.Disconnect(true);
                 };
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
         }
         // GET: File/Details/5
@@ -107,15 +109,15 @@ namespace NoteLibrary.Controllers
 
             var file = await _context.FileTable.Include(p => p.AddedUser).Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            
+
             if (file == null)
             {
                 return NotFound();
             }
-            
+
             return View(file);
         }
 
     }
-    
+
 }
