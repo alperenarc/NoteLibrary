@@ -92,7 +92,7 @@ namespace NoteLibrary.Controllers
                 {
                     //587
                     client.Connect("srvm04.turhost.com", 587, false);
-                    client.Authenticate("info@nootelib.com", "Qwerty123");
+                    client.Authenticate("info@nootelib.com", "***");
                     client.Send(message);
                     client.Disconnect(true);
                 };
