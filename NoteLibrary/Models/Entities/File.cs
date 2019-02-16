@@ -22,7 +22,8 @@ namespace NoteLibrary.Models.Entities
         public string University { get; set; }
 
         public string Department { get; set; }
-        
+        public string Password { get; set; }
+
         //Navigation
         public User AddedUser { get; set; }
         public Category Category { get; set; }

@@ -40,7 +40,7 @@ namespace NoteLibrary.Controllers
         [HttpPost]
         public IActionResult Index(string username, string password)
         {
-            if (username == "***" && password == "***")
+            if (username == "notelibadmin" && password == "eru123notelib")
             {
                 HttpContext.Session.SetString("AdminSecurity", "True");
                 return RedirectToAction("HomePage", "Admin");

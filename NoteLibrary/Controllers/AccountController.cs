@@ -85,8 +85,13 @@ namespace NoteLibrary.Controllers
                     user1.Name = Name;
                     user1.Surname = Surname;
                     user1.University = University;
+                    string GuidKey = Guid.NewGuid().ToString();
+                    user1.ConfirmGuid = GuidKey;
+                    
                     _context.Add(user1);
                     await _context.SaveChangesAsync();
+                    Helper.EmailHelper.SendMail(user1.Email, user1.ConfirmGuid);
+
                     return Json(new { ok = true, newurl = Url.Action("Login") });
 
                 }
@@ -125,9 +130,9 @@ namespace NoteLibrary.Controllers
                     string correctHash = kontrol.Hash;
                     bool Varmi = Helper.PasswordHelper.ValidatePassword(Password, correctHash);
 
-                    if (Varmi == true)
+                    if (Varmi == true )
                     {
-
+                        
                         //state durumu nedir
                         if (kontrol.State == false)
                         {
@@ -135,12 +140,20 @@ namespace NoteLibrary.Controllers
                         }
                         else
                         {
+                            if (kontrol.IsConfirmed == false)
+                            {
+                                return Json(new { ok = false, message = "NotConfirmed" });
 
-                            // session'a user Id'sini at ve indexe gönder.
-                            HttpContext.Session.SetInt32("UserId", kontrol.Id);
-                            HttpContext.Session.SetString("Authorize", "True");
-                            Console.Write("Doğru");
-                            return Json(new { ok = true, newurl = Url.Action("Index") });
+                            }
+                            else
+                            {
+                                // session'a user Id'sini at ve indexe gönder.
+                                HttpContext.Session.SetInt32("UserId", kontrol.Id);
+                                HttpContext.Session.SetString("Authorize", "True");
+                                Console.Write("Doğru");
+                                return Json(new { ok = true, newurl = Url.Action("Index") });
+                            }
+                            
                         }
 
                     }
@@ -158,7 +171,6 @@ namespace NoteLibrary.Controllers
 
             }
                 
-            return View();
         }
         public IActionResult Logout()
         {
@@ -263,13 +275,13 @@ namespace NoteLibrary.Controllers
             if (email == null || messagecontent == null || subject == null || name == null)
             {
                 ModelState.AddModelError("Hata", "Eksik Bilgi");
-                return RedirectToAction("ErrorPage","Home");
+                return View("ErrorPage");
             }
             else
             {
                 var message = new MimeMessage();
-                message.From.Add(new MailboxAddress("mailto@dovizsondurum.com"));
-                message.To.Add(new MailboxAddress("mailto@dovizsondurum.com"));
+                message.From.Add(new MailboxAddress("info@nootelib.com"));
+                message.To.Add(new MailboxAddress("info@nootelib.com"));
                 message.Subject = subject;
                 message.Body = new TextPart("html")
                 {
@@ -283,11 +295,11 @@ namespace NoteLibrary.Controllers
                 {
                     //587
                     client.Connect("srvm04.turhost.com", 587, false);
-                    client.Authenticate("mailto@dovizsondurum.com", "Qwerty123");
+                    client.Authenticate("info@nootelib.com", "Qwerty123");
                     client.Send(message);
                     client.Disconnect(true);
                 };
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Index", "Home");
             }
         }
 

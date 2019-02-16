@@ -26,6 +26,12 @@ namespace NoteLibrary.Models.Contexts
             modelBuilder.Entity<File>()
                 .Property(b => b.State)
                 .HasDefaultValue(true);
+            modelBuilder.Entity<User>()
+                .Property(b => b.IsTeacher)
+                .HasDefaultValue(false);
+            modelBuilder.Entity<User>()
+                .Property(b => b.IsConfirmed)
+                .HasDefaultValue(false);
         }
 
         public DbSet<Category> CategoryTable { get; set; }

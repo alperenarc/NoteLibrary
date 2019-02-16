@@ -30,6 +30,13 @@ namespace NoteLibrary.Models.Entities
 
         public string Hash { get; set; }
 
+
+        public bool IsTeacher { get; set; }
+        public DateTime Date { get; set; }
+        public string ConfirmGuid { get; set; }
+        public bool IsConfirmed { get; set; }
+        
+
         //Navigation
         public ICollection<File> Files { get; set; }
 

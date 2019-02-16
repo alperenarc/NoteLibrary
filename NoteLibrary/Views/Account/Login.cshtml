@@ -133,6 +133,13 @@
                             text: "Sistemde bu E-mail'e ait bir hesap bulunamadı!"
                         })
                     }
+                    else if (returndata.ok == false && returndata.message == "NotConfirmed") {
+                        Swal({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: "Lütfen Email adresinize gelen linkten Emailinizi onaylayın!"
+                        })
+                    }
 
 
                 }
