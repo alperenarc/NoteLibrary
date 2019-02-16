@@ -184,18 +184,27 @@
                                 title: 'Teşekkürler !',
                                 type: 'success',
                                 html:
-                                    '<p>Kayıt işlemi başarı ile gerçekleşti!</p>'
+                                    '<p>Kayıt işlemi başarı ile gerçekleşti E-mail hesabınızı kontrol edip gönderdiğimiz onay linkine tıklayınız lütfen!</p>'
                             }).then(function () {
                                 window.location.href = returndata.newurl;
                             });
                         }
 
+                        else if (returndata.message == "emailInvalid") {
+                            Swal({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: 'Sistemde bu E-maile ait bir hesap vardır!'
+                            })
+                        }
                         else {
                             Swal({
                                 type: 'error',
                                 title: 'Oops...',
-                                text: 'Alanlar boş geçilemez veya girilen şifre tekrar girilen şifre ile aynı olmalı!'
+                                text: 'Alanlar boş geçilemez ya da girdiğiniz şifreler birbiriyle uyuşmuyor!'
                             })
+
+
                         }
 
 

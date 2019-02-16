@@ -38,7 +38,7 @@ namespace NoteLibrary.Controllers
             }
             
             IQueryable<Models.Entities.File> file = from m in _context.FileTable.
-                                                    Where(p => p.State == true).Include(u => u.AddedUser)
+                                                    Where(p => p.State == true).Include(u => u.AddedUser).OrderByDescending(p=>p.UploadDate)
                                                     select m;
 
             if (!String.IsNullOrEmpty(searchString))
@@ -68,7 +68,7 @@ namespace NoteLibrary.Controllers
             var User = await _context.UserTable.FirstOrDefaultAsync(p => p.Email == Email);
             if (User != null)
             {
-                ModelState.AddModelError("", "Bu E-mail'e ait bir hesap vardır ! Lütfen Tekrar Deneyiniz.");
+                return Json(new { ok = false, message = "emailInvalid" });
             }
             else
             {
@@ -301,6 +301,38 @@ namespace NoteLibrary.Controllers
                 };
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+
+        public async Task<IActionResult> MyFiles(string searchString, int? page)
+        {
+            if (HttpContext.Session.GetInt32("UserId") == null || HttpContext.Session.GetInt32("UserId") == 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+
+            int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
+
+            User usr = await _context.UserTable.FirstOrDefaultAsync(p => p.Id == userid);
+           
+
+            IQueryable<Models.Entities.File> file = from m in _context.FileTable.
+                                                    Where(p => p.State == true && p.AddedUser == usr).Include(u => u.AddedUser)
+                                                    select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                file = file.Where(s => s.CourseName.Contains(searchString));
+            }
+            int pageSize = 15;
+            return View(await HomepagePaginationViewModel<Models.Entities.File>.CreateAsync(
+                file.AsNoTracking(), page ?? 1, pageSize));
         }
 
     }

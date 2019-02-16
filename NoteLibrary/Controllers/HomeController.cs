@@ -38,7 +38,7 @@ namespace NoteLibrary.Controllers
             }
 
             IQueryable<Models.Entities.File> file = from m in _context.FileTable.
-                                                    Where(p => p.State == true).Include(u => u.AddedUser)
+                                                    Where(p => p.State == true).Include(u => u.AddedUser).OrderByDescending(p=>p.UploadDate)
                                                     select m;
 
             if (!String.IsNullOrEmpty(searchString))
