@@ -1,5 +1,4 @@
-﻿@model NoteLibrary.Models.Entities.File
-
+﻿@model NoteLibrary.ViewModels.DetailsViewModel
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
@@ -8,7 +7,7 @@
 
 
 <div class="container">
-    <h2 class="pt-2">@Html.DisplayFor(model => model.CourseName) Ders Notunun Detayı</h2>
+    <h2 class="pt-2">@Html.DisplayFor(model => model.file.CourseName) Ders Notunun Detayı</h2>
     <h4>Detaylar</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -16,44 +15,53 @@
             Ders Adı
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CourseName)
+            @Html.DisplayFor(model => model.file.CourseName)
         </dd>
 
         <dt>
             Üniversite
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.University)
+            @Html.DisplayFor(model => model.file.University)
         </dd>
         <dt>
             Bölüm
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Department)
+            @Html.DisplayFor(model => model.file.Department)
         </dd>
         <dt>
             Başlık
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Title)
+            @Html.DisplayFor(model => model.file.Title)
         </dd>
         <dt>
             Açıklama
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.file.Description)
         </dd>
         <dt>
             Ekleme Bilgisi
         </dt>
         <dd>
-            <span class="bg-warning text-black">@Html.DisplayFor(model => model.AddedUser.Name) @Html.DisplayFor(model => model.AddedUser.Surname) </span> Tarafından
-            @Html.DisplayFor(model => model.UploadDate) Tarihinde Eklendi.
+            <span class="bg-warning text-black">@Html.DisplayFor(model => model.file.AddedUser.Name) @Html.DisplayFor(model => model.file.AddedUser.Surname) </span> Tarafından
+            @Html.DisplayFor(model => model.file.UploadDate) Tarihinde Eklendi.
         </dd>
     </dl>
     <div class="pb-2">
         <a asp-action="Index" class="btn btn-default" style="background-color:#FFC300; color:#181818;">Geri Dön</a>
-        <a target="_blank" href="@Html.DisplayFor(model => model.FilePath)" class="btn btn-default" style="background-color:#FFC300; color:#181818;">İndir</a>
+        <a target="_blank" href="@Html.DisplayFor(model => model.file.FilePath)" class="btn btn-default" style="background-color:#FFC300; color:#181818;">İndir</a>
+      
+            @{ var isMy = !Model.isMyFile ? "disabled" : "";}
+       
+            
+            <input type="submit"
+                   class="btn btn-default @isMy" style="background-color:#FFC300; color:#181818;" value="Dosyayı Sil"/>
+        
+            
+            
+           
     </div>
 </div>
-

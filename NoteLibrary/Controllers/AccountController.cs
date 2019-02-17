@@ -254,16 +254,32 @@ namespace NoteLibrary.Controllers
             {
                 return NotFound();
             }
-
-            var file = await _context.FileTable.Include(p => p.AddedUser).Include(p => p.Category)
+            DetailsViewModel vm = new DetailsViewModel();
+            vm.file = await _context.FileTable.Include(p => p.AddedUser).Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (file == null)
+            
+            if (vm.file == null)
             {
                 return NotFound();
             }
+            vm.isMyFile = IsMyFile(vm.file.Id);
+            return View(vm);
+        }
+        public  bool IsMyFile(int? id)
+        {
+            int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
+            var me =  _context.UserTable.FirstOrDefault(u => u.Id == userid);
 
-            return View(file);
+            var file = _context.FileTable.Include(a => a.AddedUser).FirstOrDefault(f => f.Id == id);
+            if(me == file.AddedUser)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+           
         }
         public IActionResult Contact()
         {
