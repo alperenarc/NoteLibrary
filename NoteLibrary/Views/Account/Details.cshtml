@@ -53,15 +53,48 @@
     <div class="pb-2">
         <a asp-action="Index" class="btn btn-default" style="background-color:#FFC300; color:#181818;">Geri Dön</a>
         <a target="_blank" href="@Html.DisplayFor(model => model.file.FilePath)" class="btn btn-default" style="background-color:#FFC300; color:#181818;">İndir</a>
-      
-            @{ var isMy = !Model.isMyFile ? "disabled" : "";}
-       
-            
-            <input type="submit"
-                   class="btn btn-default @isMy" style="background-color:#FFC300; color:#181818;" value="Dosyayı Sil"/>
-        
-            
-            
-           
+
+        @{ var isMy = !Model.isMyFile ? "disabled" : "";}
+
+
+        <input type="submit" id="DeleteButton" class="btn btn-default @isMy" style="background-color:#FFC300; color:#181818;" value="Dosyayı Sil" />
+
+
+
+
     </div>
 </div>
+<script src="~/dist/sweetalert2.js"></script>
+<script>
+    var deletebutton = document.getElementById('DeleteButton');
+    deletebutton.addEventListener('click', function () {
+
+        var ID = @Html.DisplayFor(model => model.file.Id);
+        $.ajax({
+            type: "POST",
+            url: "/Account/Delete",
+            data: {
+                id: ID
+
+            }, success: function () {
+                
+                    Swal({
+                        title: 'Başarılı !',
+                        type: 'success',
+                        html:
+                            '<p>Dosya Silme İşlemi Başarıyla Gerçekleşti!</p>'
+                    }).then(function () {
+                        window.location.href = "/Account/Index";
+                    });
+                
+                
+
+
+            }
+        });
+        
+    });
+
+
+
+</script>

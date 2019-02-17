@@ -351,5 +351,15 @@ namespace NoteLibrary.Controllers
                 file.AsNoTracking(), page ?? 1, pageSize));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var file = await _context.FileTable.FindAsync(id);
+            file.State = false;
+            _context.FileTable.Update(file);
+            await _context.SaveChangesAsync();
+            return Json(new { ok = true});
+        }
+
     }
 }
