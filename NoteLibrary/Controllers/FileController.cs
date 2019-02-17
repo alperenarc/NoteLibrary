@@ -177,40 +177,40 @@ namespace NoteLibrary.Controllers
             return View(file);
         }
 
-        // GET: File/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (HttpContext.Session.GetString("AdminSecurity") == "True")
-            {
-                if (id == null)
-                {
-                    return NotFound();
-                }
+        //// GET: File/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (HttpContext.Session.GetString("AdminSecurity") == "True")
+        //    {
+        //        if (id == null)
+        //        {
+        //            return NotFound();
+        //        }
 
-                var file = await _context.FileTable
-                    .FirstOrDefaultAsync(m => m.Id == id);
-                if (file == null)
-                {
-                    return NotFound();
-                }
+        //        var file = await _context.FileTable
+        //            .FirstOrDefaultAsync(m => m.Id == id);
+        //        if (file == null)
+        //        {
+        //            return NotFound();
+        //        }
 
-                return View(file);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
-            }
-        }
+        //        return View(file);
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login", "Account");
+        //    }
+        //}
 
         // POST: File/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var file = await _context.FileTable.FindAsync(id);
             _context.FileTable.Remove(file);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Account");
         }
 
         private bool FileExists(int id)
@@ -236,6 +236,6 @@ namespace NoteLibrary.Controllers
             les.Insert(0, new Category { Id = 0, Name = "Select" });
             return Json(new SelectList(les, "Id", "Name"));
         }
-
+        
     }
 }
