@@ -18,7 +18,7 @@ namespace NoteLibrary.Helper
             message.Body = new TextPart("html")
             {
                 Text = "Hesabınızı onaylamak için aşağıdaki linke tıklayınız... <br/>" +
-                "<a href='https://localhost:5001/Confirmation/Verification/?guidcode=" + GuideCode + "'>Onaylama Linki<a/>"
+                "<a href='https://nootelib.com/Confirmation/Verification/?guidcode=" + GuideCode + "'>Onaylama Linki<a/>"
                 //Confirmation / Verification /
             };
 
