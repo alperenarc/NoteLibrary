@@ -42,7 +42,7 @@ namespace NoteLibrary
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            var connection = @"Server=mssql11.turhost.com; Initial Catalog=NoteLibrary; User ID=Alperen;Password=AlpEray2017*";
+            var connection = @"Server=mssql11.turhost.com; Initial Catalog=nootelib_; User ID=Alperen; Password=ErayAlp2017*";
             //var connection = @"Server=(localdb)\mssqllocaldb;Database=NoteLibrary;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<NoteContext>(options => options.UseSqlServer(connection));
         }

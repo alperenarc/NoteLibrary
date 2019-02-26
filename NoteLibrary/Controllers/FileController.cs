@@ -33,7 +33,7 @@ namespace NoteLibrary.Controllers
                 {
                     file = file.Where(s => s.CourseName.Contains(searchString));
                 }
-                
+
                 return View(await file.ToListAsync());
             }
             else
@@ -71,7 +71,7 @@ namespace NoteLibrary.Controllers
         }
 
         // GET: File/Create
-        public async  Task<IActionResult> Create()
+        public async Task<IActionResult> Create()
         {
             if (HttpContext.Session.GetString("Authorize") == "False")
             {
@@ -79,7 +79,7 @@ namespace NoteLibrary.Controllers
             }
             else
             {
-                var City= await _context.CategoryTable.Where(p => p.UpperId == 0).ToListAsync();
+                var City = await _context.CategoryTable.Where(p => p.UpperId == 0).ToListAsync();
                 City.Insert(0, new Category { Id = 0, Name = "Select" });
                 ViewBag.ListofCities = City;
 
@@ -88,20 +88,22 @@ namespace NoteLibrary.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> Create(FileCreateViewModel vm,string categoryLessonId,int uniCategoryId,int depCategoryId)
+        public async Task<IActionResult> Create(FileCreateViewModel vm, string categoryLessonId, int uniCategoryId, int depCategoryId)
         {
+
             int userid = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
-            var categoryid = Convert.ToInt32(categoryLessonId); 
-            var ctrgCourseName = await _context.CategoryTable.FirstOrDefaultAsync(p => p.Id == categoryid );
-            var ctrgUni = await _context.CategoryTable.FirstOrDefaultAsync(p => p.Id == uniCategoryId );
-            var ctrgDep = await _context.CategoryTable.FirstOrDefaultAsync(p => p.Id == depCategoryId );
+            var categoryid = Convert.ToInt32(categoryLessonId);
+            var ctrgCourseName = await _context.CategoryTable.FirstOrDefaultAsync(p => p.Id == categoryid);
+            var ctrgUni = await _context.CategoryTable.FirstOrDefaultAsync(p => p.Id == uniCategoryId);
+            var ctrgDep = await _context.CategoryTable.FirstOrDefaultAsync(p => p.Id == depCategoryId);
             var usr = await _context.UserTable.FirstOrDefaultAsync(p => p.Id == userid);
 
             if (vm.FilePath == null || vm.Title == null || categoryid == 0 || uniCategoryId == 0 || depCategoryId == 0 || usr == null)
             {
-                return Json(new { ok = false});
+                return Json(new { ok = false });
             }
-            else {
+            else
+            {
                 File file = new File();
                 file.CourseName = ctrgCourseName.Name;
                 file.Title = vm.Title;
@@ -116,8 +118,6 @@ namespace NoteLibrary.Controllers
                 await _context.SaveChangesAsync();
                 return Json(new { ok = true });
             }
-
-            
         }
 
         // GET: File/Edit/5
@@ -222,7 +222,7 @@ namespace NoteLibrary.Controllers
         {
             List<Category> unis = _context.CategoryTable.Where(p => p.UpperId == cityCategoryId).ToList();
             unis.Insert(0, new Category { Id = 0, Name = "Select" });
-            return Json(new SelectList(unis,"Id","Name"));
+            return Json(new SelectList(unis, "Id", "Name"));
         }
         public JsonResult GetDepartment(int uniCategoryId)
         {
@@ -236,6 +236,6 @@ namespace NoteLibrary.Controllers
             les.Insert(0, new Category { Id = 0, Name = "Select" });
             return Json(new SelectList(les, "Id", "Name"));
         }
-        
+
     }
 }

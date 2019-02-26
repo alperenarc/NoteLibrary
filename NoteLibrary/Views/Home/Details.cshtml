@@ -49,6 +49,33 @@
     </dl>
     <div class="pb-2">
         <a asp-action="Index" class="btn btn-default" style="background-color:#FFC300; color:#181818;">Geri Dön</a>
-        <a target="_blank" href="@Html.DisplayFor(model => model.FilePath)" class="btn btn-default" style="background-color:#FFC300; color:#181818;">İndir</a>
+        <a target="_blank" href="@Html.DisplayFor(model => model.FilePath)" id="indir" class="btn btn-default" style="background-color:#FFC300; color:#181818;">İndir</a>
+
     </div>
 </div>
+
+
+<script src="~/package/dist/sweetalert2.js"></script>
+<script>
+    var indir = document.getElementById('indir');
+    indir.addEventListener('click', function () {
+
+        Swal({
+            type: 'success',
+            title: 'Teşekkürler',
+            text: 'İndirme Başarılı',
+        }).then(function () {
+            window.location.href = "/Home/Index";
+        });
+    });
+
+</script>
+
+<!--Reklam Alanı-->
+<script type="text/javascript">
+    var uid = '228531';
+    var wid = '474084';
+</script>
+<script type="text/javascript" src="//cdn.popcash.net/pop.js"></script>
+
+

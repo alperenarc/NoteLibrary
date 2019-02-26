@@ -25,7 +25,7 @@ namespace NoteLibrary.Models.Contexts
                 .HasDefaultValue(true);
             modelBuilder.Entity<File>()
                 .Property(b => b.State)
-                .HasDefaultValue(true);
+                .HasDefaultValue(false);
             modelBuilder.Entity<User>()
                 .Property(b => b.IsTeacher)
                 .HasDefaultValue(false);

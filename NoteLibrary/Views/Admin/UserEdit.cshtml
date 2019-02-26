@@ -48,6 +48,21 @@
                     <input asp-for="Hash" class="form-control" />
                     <span asp-validation-for="Hash" class="text-danger"></span>
                 </div>
+                <div class="form-group">
+                    <label asp-for="IsConfirmed" class="control-label"></label>
+                    <input asp-for="IsConfirmed" class="form-control" />
+                    <span asp-validation-for="IsConfirmed" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ConfirmGuid" class="control-label"></label>
+                    <input asp-for="ConfirmGuid" class="form-control" />
+                    <span asp-validation-for="ConfirmGuid" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IsTeacher" class="control-label"></label>
+                    <input asp-for="IsTeacher" class="form-control" />
+                    <span asp-validation-for="IsTeacher" class="text-danger"></span>
+                </div>
                 <input type="hidden" asp-for="Id" />
                 <div class="form-group">
                     <div class="checkbox">

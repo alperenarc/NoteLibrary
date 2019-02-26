@@ -40,44 +40,62 @@
                 <th>
                     @Html.DisplayNameFor(model => model.State)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsTeacher)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsConfirmed)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ConfirmGuid)
+                </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Surname)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.City)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.University)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Department)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Hash)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.State)
-                    </td>
-                    <td>
-                        <a asp-action="UserEdit" asp-route-id="@item.Id">Edit</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.University)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hash)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.State)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsTeacher)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsConfirmed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ConfirmGuid)
+                </td>
+                <td>
+                    <a asp-action="UserEdit" asp-route-id="@item.Id">Edit</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

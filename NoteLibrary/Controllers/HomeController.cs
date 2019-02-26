@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Korzh.EasyQuery.Linq;
 using NoteLibrary.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace NoteLibrary.Controllers
 {
@@ -27,10 +28,10 @@ namespace NoteLibrary.Controllers
 
             _context = context;
         }
-        public async Task<IActionResult> Index(string searchString, int? page)
+        public async Task<IActionResult> Index(string searchString, string DepartmentFile, int? page)
         {
             HttpContext.Session.SetString("Authorize", "False");
-
+            
 
             if (searchString != null)
             {
@@ -41,16 +42,32 @@ namespace NoteLibrary.Controllers
                                                     Where(p => p.State == true).Include(u => u.AddedUser).OrderByDescending(p=>p.UploadDate)
                                                     select m;
 
+            IQueryable<string> genreQuery = from m in _context.FileTable
+                                            orderby m.Department
+                                            select m.Department;
+
+            
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 file = file.Where(s => s.CourseName.Contains(searchString));
             }
+            if (!String.IsNullOrEmpty(DepartmentFile))
+            {
+                file = file.Where(s => s.Department.Contains(DepartmentFile));
+            }
 
+            var VMDep = new DepartmentViewModel
+            {
+                Departments = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                Files = await file.ToListAsync()
+            };
 
 
             int pageSize = 15;
             return View(await HomepagePaginationViewModel<Models.Entities.File>.CreateAsync(
                 file.AsNoTracking(), page ?? 1, pageSize));
+           
         }
         public IActionResult Contact()
         {

@@ -261,7 +261,7 @@ namespace NoteLibrary.Controllers
         // POST: Admin/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UserEdit(int id, [Bind("Name,Surname,University,Department,City,Email,Hash,Id,State")] User user)
+        public async Task<IActionResult> UserEdit(int id, [Bind("Name,Surname,University,Department,City,IsTeacher,ConfirmGuid,IsConfirmed,Email,Hash,Id,State")] User user)
         {
             if (id != user.Id)
             {
@@ -309,5 +309,20 @@ namespace NoteLibrary.Controllers
             }
 
         }
+      
+        public IActionResult Waitforapproval()
+        {
+            if (HttpContext.Session.GetString("AdminSecurity") == "True")
+            {
+                var file = _context.FileTable.Where(p => p.State == false);
+                return View(file);
+            }
+            else
+            {
+                return View("Index");
+            }
+            
+        }
+       
     }
 }
