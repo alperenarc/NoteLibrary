@@ -85,6 +85,7 @@ namespace NoteLibrary.Controllers
                     user1.Name = Name;
                     user1.Surname = Surname;
                     user1.University = University;
+                    user1.Date = DateTime.Now;
                     string GuidKey = Guid.NewGuid().ToString();
                     user1.ConfirmGuid = GuidKey;
                     

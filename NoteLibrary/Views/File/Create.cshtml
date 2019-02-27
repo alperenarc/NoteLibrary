@@ -179,109 +179,128 @@
             var file = e.target.files[0];
             
             var ext = file.name.split('.').pop();
-            
-            if (ext == "zip") {
-                var newName = guid(file.name) + ".zip";
-            }
-            else if (ext == "rar") {
-                var newName = guid(file.name) + ".rar";
-            }
-            else {
-                    var newName = guid(file.name) + "." + ext;
-            }
 
-            console.log(ext);
-            
-            var url1 = 'files/' + newName;
-            var storageRef = firebase.storage().ref(url1);
 
-            var task = storageRef.put(file);
+            if (ext == "exe") {
 
-            task.on('state_changed', function (snapshot) {
-                // Observe state change events such as progress, pause, and resume
-                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
-                switch (snapshot.state) {
-
-                    case firebase.storage.TaskState.PAUSED: // or 'paused'
-                        console.log('Upload is paused');
-                        break;
-                    case firebase.storage.TaskState.RUNNING: // or 'running'
-
-                        Swal.showLoading();
-
-                        progressid.setAttribute("aria-valuenow", progress);
-                        progressid.style.width = progress + "%";
-
-                        console.log('Upload is running');
-                        break;
-
-                }
-            }, function (error) {
-                // Handle unsuccessful uploads
-                console.log(error)
                 Swal({
                     type: 'error',
                     title: 'Oops...',
-                    text: 'Birşeyler yanlış gitti ve attığınız ders notu sisteme yüklenemedi.',
+                    text: 'Attığınız dosya türü kabul edilemez!',
                 }).then(function () {
-                    window.location.href = "/Account/Index";
+                    window.location.href = "/File/Create";
                 });
 
+            }
+            else {
 
+                if (ext == "zip") {
+                    var newName = guid(file.name) + ".zip";
+                }
+                else if (ext == "rar") {
+                    var newName = guid(file.name) + ".rar";
+                }
+                else {
+                    var newName = guid(file.name) + "." + ext;
+                }
 
-            }, function () {
-                //After the upload data will go database
-                task.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-                    var title = document.getElementById('title').value;
-                    var descrpt = document.getElementById('description').value;
-                    var categorylesson = document.getElementById('lesCategoryId').value;
-                    var unicategoryid = document.getElementById('uniCategoryId').value;
-                    var depcategoryid = document.getElementById('depCategoryId').value;
-                    console.log(unicategoryid);
-                    $.ajax({
-                        type: "POST",
-                        url: "/File/Create",
-                        data: {
-                            filePath: downloadURL,
-                            categoryLessonId: categorylesson,
-                            title: title,
-                            description: descrpt,
-                            uniCategoryId: unicategoryid,
-                            depCategoryId: depcategoryid
-                        },
-                        success: function (returndata) {
-                            if (returndata.ok == true) {
-                                Swal({
-                                    title: 'Teşekkürler !',
-                                    type: 'success',
-                                    html:
-                                        '<p>Dosya Yüklemesi Başarıyla Gerçekleşti!</p>'
-                                }).then(function () {
-                                    window.location.href = "/Account/Index";
-                                });
-                            }
-                            else {
-                                Swal({
-                                    title: 'Hata !',
-                                    type: 'error',
-                                    html:
-                                        '<p>Alanlar boş bırakılamaz !</p>'
-                                }).then(function () {
-                                    window.location.href = "/File/Create";
-                                });
+                console.log(ext);
 
-                            }
+                var url1 = 'files/' + newName;
+                var storageRef = firebase.storage().ref(url1);
 
+                var task = storageRef.put(file);
 
-                        },
+                task.on('state_changed', function (snapshot) {
+                    // Observe state change events such as progress, pause, and resume
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                    switch (snapshot.state) {
 
+                        case firebase.storage.TaskState.PAUSED: // or 'paused'
+                            console.log('Upload is paused');
+                            break;
+                        case firebase.storage.TaskState.RUNNING: // or 'running'
+
+                            Swal.showLoading();
+
+                            progressid.setAttribute("aria-valuenow", progress);
+                            progressid.style.width = progress + "%";
+
+                            console.log('Upload is running');
+                            break;
+
+                    }
+                }, function (error) {
+                    // Handle unsuccessful uploads
+                    console.log(error)
+                    Swal({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Birşeyler yanlış gitti ve attığınız ders notu sisteme yüklenemedi.',
+                    }).then(function () {
+                        window.location.href = "/Account/Index";
                     });
 
-                    console.log('File available at', downloadURL);
+
+
+                }, function () {
+                    //After the upload data will go database
+                    task.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                        var title = document.getElementById('title').value;
+                        var descrpt = document.getElementById('description').value;
+                        var categorylesson = document.getElementById('lesCategoryId').value;
+                        var unicategoryid = document.getElementById('uniCategoryId').value;
+                        var depcategoryid = document.getElementById('depCategoryId').value;
+                        console.log(unicategoryid);
+                        $.ajax({
+                            type: "POST",
+                            url: "/File/Create",
+                            data: {
+                                filePath: downloadURL,
+                                categoryLessonId: categorylesson,
+                                title: title,
+                                description: descrpt,
+                                uniCategoryId: unicategoryid,
+                                depCategoryId: depcategoryid
+                            },
+                            success: function (returndata) {
+                                if (returndata.ok == true) {
+                                    Swal({
+                                        title: 'Teşekkürler !',
+                                        type: 'success',
+                                        html:
+                                            '<p>Dosya Yüklemesi Başarıyla Gerçekleşti!</p>'
+                                    }).then(function () {
+                                        window.location.href = "/Account/Index";
+                                    });
+                                }
+                                else {
+                                    Swal({
+                                        title: 'Hata !',
+                                        type: 'error',
+                                        html:
+                                            '<p>Alanlar boş bırakılamaz !</p>'
+                                    }).then(function () {
+                                        window.location.href = "/File/Create";
+                                    });
+
+                                }
+
+
+                            },
+
+                        });
+
+                        console.log('File available at', downloadURL);
+                    });
                 });
-            });
+
+
+            }
+            
+           
 
 
         });
