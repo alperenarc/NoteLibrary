@@ -150,7 +150,7 @@ namespace NoteLibrary.Controllers
         {
             if (HttpContext.Session.GetString("AdminSecurity") == "True")
             {
-                return View(await _context.FileTable.ToListAsync());
+                return View(await _context.FileTable.OrderByDescending(p => p.UploadDate).ToListAsync());
             }
             else
             {
@@ -314,7 +314,7 @@ namespace NoteLibrary.Controllers
         {
             if (HttpContext.Session.GetString("AdminSecurity") == "True")
             {
-                var file = _context.FileTable.Where(p => p.State == false);
+                var file = _context.FileTable.Where(p => p.State == false).OrderByDescending(p => p.UploadDate);
                 return View(file);
             }
             else
